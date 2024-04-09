@@ -1,0 +1,24 @@
+{
+  "name": "getting-started-with-playwright-automation-core-concepts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "Regression": "npx playwright test Regression",
+    "CopyCourse": "npx playwright test CopyCourseClientApp.spec.js",
+    "Sauce": "npx playwright test saucedemo.spec.js",
+    "MyPOMCourseClient": "npx playwright test MyPOMCourseClientApp.spec.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.41.2",
+    "@types/node": "^20.11.0",
+    "allure-playwright": "^2.12.0"
+  },
+  "dependencies": {
+    "pixelmatch": "^5.3.0",
+    "pngjs": "^7.0.0"
+  }
+}

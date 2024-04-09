@@ -1,0 +1,3 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Feb 06 14:50:21 CET 2024","Tue Feb 06 14:50:36 CET 2024","14582","","CopyCourseClientApp.spec.js","","","","Client app ZARA COAT 3",""
+"passed","Tue Feb 06 14:50:36 CET 2024","Tue Feb 06 14:50:49 CET 2024","13438","","CopyCourseClientApp.spec.js","","","","Client app ADIDAS ORIGINAL",""
