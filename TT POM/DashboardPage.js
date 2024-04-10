@@ -226,7 +226,7 @@ class DashboardPage {
   async tickerTwo() {
     await this.base.optionPicker('Ticker', 'General')
     await this.base.deactivateActivateTicker('Ticker1', 'on')
-    await this.base.deactivateActivateTicker('Ticker2', 'on')
+    await this.page.locator('.slider').nth(4).click()
     await this.rightButton.nth(1).click()
     await this.displaySymbolTicker('SMI PR', 1)
     await this.countTicker(2)

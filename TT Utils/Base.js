@@ -103,23 +103,18 @@ class Base {
 
     for (let i = 0; i < count; ++i) {
       const text = await tickerWrapper.nth(i).textContent()
-
-      // Determining action based on text and desired state
       if ((state === 'on' && text.includes('Activate')) || (state === 'off' && text.includes('Deactivate'))) {
-        // Needs to toggle the state once
         await tickerDrawer.nth(actionIndex).click()
         await this.page.waitForTimeout(2000)
       } else if ((state === 'on' && text.includes('Deactivate')) || (state === 'off' && text.includes('Activate'))) {
-        // Already in desired state but needs to ensure it stays or switches
         await tickerDrawer.nth(actionIndex).click()
         await this.page.waitForTimeout(2000)
-        // Click again to ensure it either stays in the same state or toggles as needed
         await tickerDrawer.nth(actionIndex).click()
         await this.page.waitForTimeout(2000)
       }
-      break // Assuming the action is required only for the first matching condition
+      break
     }
-    await this.page.waitForTimeout(5000) // Additional wait if needed
+    await this.page.waitForTimeout(5000)
   }
 
   async toolTip(option) {
