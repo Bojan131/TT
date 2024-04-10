@@ -1,1 +1,8 @@
-{"uid":"83edc06c07f9ae9e47eb6dd1b683e4e2","name":"packages","children":[{"name":"Client app ZARA COAT 3","uid":"d5b0a79cf0e9cb9","parentUid":"83edc06c07f9ae9e47eb6dd1b683e4e2","status":"passed","time":{"start":1707227421439,"stop":1707227436021,"duration":14582},"flaky":false,"newFailed":false,"newPassed":false,"newBroken":false,"retriesCount":1,"retriesStatusChange":true,"parameters":[],"tags":[]},{"name":"Client app ADIDAS ORIGINAL","uid":"32079ad7f6a5aabf","parentUid":"83edc06c07f9ae9e47eb6dd1b683e4e2","status":"passed","time":{"start":1707227436032,"stop":1707227449470,"duration":13438},"flaky":false,"newFailed":false,"newPassed":false,"newBroken":false,"retriesCount":1,"retriesStatusChange":true,"parameters":[],"tags":[]}]}
+{
+  "uid": "83edc06c07f9ae9e47eb6dd1b683e4e2",
+  "name": "packages",
+  "children": [
+    { "name": "Client app ZARA COAT 3", "uid": "d5b0a79cf0e9cb9", "parentUid": "83edc06c07f9ae9e47eb6dd1b683e4e2", "status": "passed", "time": { "start": 1707227421439, "stop": 1707227436021, "duration": 14582 }, "flaky": false, "newFailed": false, "newPassed": false, "newBroken": false, "retriesCount": 1, "retriesStatusChange": true, "parameters": [], "tags": [] },
+    { "name": "Client app ADIDAS ORIGINAL", "uid": "32079ad7f6a5aabf", "parentUid": "83edc06c07f9ae9e47eb6dd1b683e4e2", "status": "passed", "time": { "start": 1707227436032, "stop": 1707227449470, "duration": 13438 }, "flaky": false, "newFailed": false, "newPassed": false, "newBroken": false, "retriesCount": 1, "retriesStatusChange": true, "parameters": [], "tags": [] }
+  ]
+}

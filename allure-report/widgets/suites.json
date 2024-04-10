@@ -1,1 +1,1 @@
-{"total":1,"items":[{"uid":"f60ba5dfe014d107ada58daac1715894","name":"CopyCourseClientApp.spec.js","statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2}}]}
+{ "total": 1, "items": [{ "uid": "f60ba5dfe014d107ada58daac1715894", "name": "CopyCourseClientApp.spec.js", "statistic": { "failed": 0, "broken": 0, "skipped": 0, "passed": 2, "unknown": 0, "total": 2 } }] }

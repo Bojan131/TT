@@ -1,1 +1,4 @@
-[{"uid":"d5b0a79cf0e9cb9","name":"Client app ZARA COAT 3","time":{"start":1707227421439,"stop":1707227436021,"duration":14582},"status":"passed","severity":"normal"},{"uid":"32079ad7f6a5aabf","name":"Client app ADIDAS ORIGINAL","time":{"start":1707227436032,"stop":1707227449470,"duration":13438},"status":"passed","severity":"normal"}]
+[
+  { "uid": "d5b0a79cf0e9cb9", "name": "Client app ZARA COAT 3", "time": { "start": 1707227421439, "stop": 1707227436021, "duration": 14582 }, "status": "passed", "severity": "normal" },
+  { "uid": "32079ad7f6a5aabf", "name": "Client app ADIDAS ORIGINAL", "time": { "start": 1707227436032, "stop": 1707227449470, "duration": 13438 }, "status": "passed", "severity": "normal" }
+]
