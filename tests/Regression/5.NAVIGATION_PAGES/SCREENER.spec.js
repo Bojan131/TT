@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let screener
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
@@ -15,10 +16,10 @@ test.beforeEach(async ({ page }) => {
   await loginpage.successfullLogin()
   screener = new SCREENER(page)
   await base.NavigateTo('Screener')
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
+  if (!isDataReset) {
+    await base.resetData()
+    isDataReset = true
+  }
 })
 
 test('Screener(1/2/3/4/5/6/7/8/9)', async () => {

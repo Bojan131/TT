@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let futures
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
@@ -15,10 +16,10 @@ test.beforeEach(async ({ page }) => {
   await loginpage.successfullLogin()
   futures = new FUTURES(page)
   await base.NavigateTo('Futures')
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
+  if (!isDataReset) {
+    await base.resetData()
+    isDataReset = true
+  }
 })
 
 test('Futures(1)', async () => {

@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let moneyMarkets
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
@@ -15,10 +16,10 @@ test.beforeEach(async ({ page }) => {
   await loginpage.successfullLogin()
   moneyMarkets = new MONEY_MARKETS(page)
   await base.NavigateTo('Money Markets')
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
+  if (!isDataReset) {
+    await base.resetData()
+    isDataReset = true
+  }
 })
 
 test('Money Markets(1/2/3)', async () => {

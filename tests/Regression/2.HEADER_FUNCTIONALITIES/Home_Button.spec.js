@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let dashboard
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
@@ -14,10 +15,10 @@ test.beforeEach(async ({ page }) => {
   await loginpage.loginWS(dataset.username, dataset.password)
   await loginpage.successfullLogin()
   dashboard = new DashboardPage(page)
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
+  if (!isDataReset) {
+    await base.resetData()
+    isDataReset = true
+  }
 })
 
 test('Starting Page(1)', async () => {

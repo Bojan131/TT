@@ -7,6 +7,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let watchlist
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(19)') {
@@ -17,11 +18,11 @@ test.beforeEach(async ({ page }, testInfo) => {
     await loginpage.successfullLogin()
     watchlist = new WATCHLIST(page)
     await base.NavigateTo('Watchlists')
+    if (!isDataReset) {
+      await base.resetData()
+      isDataReset = true
+    }
   }
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
 })
 
 test('Create Watchlist(1/2)', async () => {

@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let portfolio
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(36)') {
@@ -16,11 +17,11 @@ test.beforeEach(async ({ page }, testInfo) => {
     await loginpage.successfullLogin()
     portfolio = new PORTFOLIO(page)
     await base.NavigateTo('Portfolio')
+    if (!isDataReset) {
+      await base.resetData()
+      isDataReset = true
+    }
   }
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
 })
 
 test('Create Portfolio(1/2/3/4)', async () => {

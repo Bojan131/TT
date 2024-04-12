@@ -6,6 +6,7 @@ const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.
 let loginpage
 let accountsettings
 let base
+let isDataReset = false
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Ticker6') {
@@ -15,11 +16,11 @@ test.beforeEach(async ({ page }, testInfo) => {
     await loginpage.loginWS(dataset.username, dataset.password)
     await loginpage.successfullLogin()
     accountsettings = new AccountSettings(page)
+    if (!isDataReset) {
+      await base.resetData()
+      isDataReset = true
+    }
   }
-})
-
-test('Reset Data', async () => {
-  await base.resetData()
 })
 
 test('News in Market Tab(1)', async () => {
