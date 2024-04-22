@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
-const { WATCHLIST } = require('../../../TT POM/WATCHLIST')
+const { Watchlist } = require('../../../TT POM/Watchlist')
 const { Base } = require('../../../TT Utils/Base')
 const { watch } = require('fs')
 const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
@@ -12,11 +12,12 @@ let isDataReset = false
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(19)') {
     loginpage = new LoginPage(page)
+    watchlist = new Watchlist(page)
     base = new Base(page)
+
     await loginpage.goTo()
     await loginpage.loginWS(dataset.username, dataset.password)
     await loginpage.successfullLogin()
-    watchlist = new WATCHLIST(page)
     await base.NavigateTo('Watchlists')
     if (!isDataReset) {
       await base.resetData()

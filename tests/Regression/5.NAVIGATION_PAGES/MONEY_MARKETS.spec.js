@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
-const { MONEY_MARKETS } = require('../../../TT POM/MONEY_MARKETS')
+const { Money_Markets } = require('../../../TT POM/Money_Markets')
 const { Base } = require('../../../TT Utils/Base')
 const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
@@ -10,11 +10,12 @@ let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
+  moneyMarkets = new Money_Markets(page)
   base = new Base(page)
+
   await loginpage.goTo()
   await loginpage.loginWS(dataset.username, dataset.password)
   await loginpage.successfullLogin()
-  moneyMarkets = new MONEY_MARKETS(page)
   await base.NavigateTo('Money Markets')
   if (!isDataReset) {
     await base.resetData()

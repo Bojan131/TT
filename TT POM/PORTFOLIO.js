@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class PORTFOLIO {
+class Portfolio extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.addNewPortfolioButton = page.locator('.buttons_container .plain')
     this.savePortfolioButton = page.locator(".footer [type='submit']")
     this.portfolioName = page.locator('.tab-content-txt')
@@ -114,7 +113,7 @@ class PORTFOLIO {
 
   async dragAndDropSymbolDAX() {
     await this.choosePortfolio('Portfolio 1')
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.dragAndDrop('.aside_widget_content .table_symbol_link:has-text("DAX")', '.markets_table_wrapper')
     await this.portfolioNumberField.fill('0.01')
     await this.savePortfolioButton.click()
@@ -137,18 +136,18 @@ class PORTFOLIO {
     await this.page.dragAndDrop('.colored-link-light:has-text("ADIDAS")', '.markets_table_wrapper')
     await this.portfolioNumberField.fill('5')
     await this.savePortfolioButton.click()
-    await expect(this.page.locator('.markets_table_wrapper .base_cell_wrapper').nth(9)).toHaveText('6')
+    await expect(this.page.locator('.markets_table_wrapper _cell_wrapper').nth(9)).toHaveText('6')
     await this.choosePortfolio('Portfolio 2')
     await this.liveSearch.fill('Adidas')
     await this.page.dragAndDrop('.colored-link-light:has-text("ADIDAS")', '.markets_table_wrapper')
     await this.portfolioNumberField.fill('1')
     await this.savePortfolioButton.click()
-    await expect(this.page.locator('.markets_table_wrapper .base_cell_wrapper').nth(9)).toHaveText('1')
+    await expect(this.page.locator('.markets_table_wrapper _cell_wrapper').nth(9)).toHaveText('1')
     await this.liveSearch.fill('Adidas')
     await this.page.dragAndDrop('.colored-link-light:has-text("ADIDAS")', '.markets_table_wrapper')
     await this.portfolioNumberField.fill('5')
     await this.savePortfolioButton.click()
-    await expect(this.page.locator('.markets_table_wrapper .base_cell_wrapper').nth(9)).toHaveText('5')
+    await expect(this.page.locator('.markets_table_wrapper _cell_wrapper').nth(9)).toHaveText('5')
   }
 
   async infoPage() {
@@ -185,9 +184,9 @@ class PORTFOLIO {
 
   async transactionTab() {
     await this.choosePortfolio('Portfolio 1')
-    await this.base.chooseSymbolTab('Transactions')
+    await this.chooseSymbolTab('Transactions')
     await expect(this.transactionTable).toBeVisible()
-    await this.base.isActive('All')
+    await this.isActive('All')
     await expect(this.cancelPositionButton.first()).toBeVisible()
   }
 
@@ -195,15 +194,15 @@ class PORTFOLIO {
     await this.buySellOthersButton.nth(1).click()
     await this.page.waitForTimeout(3000)
     const buySymbolCount = await this.transactionSymbols.count()
-    const countBuy = await this.page.locator(".base_cell_wrapper:has-text('Buy')").count()
+    const countBuy = await this.page.locator("_cell_wrapper:has-text('Buy')").count()
     expect(buySymbolCount).toEqual(countBuy)
     await this.buySellOthersButton.nth(2).click()
     await this.page.waitForTimeout(3000)
     const sellSymbolCount = await this.transactionSymbols.count()
-    const countsell = await this.page.locator(".base_cell_wrapper:has-text('Sell')").count()
+    const countsell = await this.page.locator("_cell_wrapper:has-text('Sell')").count()
     expect(sellSymbolCount).toEqual(countsell)
     await this.buySellOthersButton.nth(3).click()
-    await expect(this.page.locator(".base_cell_wrapper:has-text('Deposit')")).toBeVisible()
+    await expect(this.page.locator("_cell_wrapper:has-text('Deposit')")).toBeVisible()
   }
 
   async cancelPoistion() {
@@ -219,18 +218,18 @@ class PORTFOLIO {
 
   async chartTab() {
     await this.choosePortfolio('Portfolio 1')
-    await this.base.chooseSymbolTab('Chart')
+    await this.chooseSymbolTab('Chart')
     await expect(this.portfolioChart).toBeVisible()
   }
 
   async allButton() {
     await this.allChartButton.click()
-    await this.base.isActive('All')
+    await this.isActive('All')
   }
 
   async comparePorfolio() {
     await this.dropDownFields.nth(1).click()
-    await this.base.chooseEllipsis('Portfolio 2')
+    await this.chooseEllipsis('Portfolio 2')
     await this.refreshButton.click()
     await expect(this.portfolioLabel).toHaveText('Portfolio 2')
   }
@@ -254,19 +253,19 @@ class PORTFOLIO {
   }
 
   async structureTab() {
-    await this.base.chooseSymbolTab('Structure')
+    await this.chooseSymbolTab('Structure')
     await this.page.waitForSelector('.highcharts-series-group', { state: 'visible' })
     const countPie = await this.highChart.count()
     expect(countPie).toEqual(5)
   }
 
   async RiskMatrix() {
-    await this.base.chooseSymbolTab('Risk matrix')
+    await this.chooseSymbolTab('Risk matrix')
     await expect(this.riskMatrixChart).toBeVisible()
   }
 
   async settings() {
-    await this.base.chooseSymbolTab('Settings')
+    await this.chooseSymbolTab('Settings')
     await this.page.waitForSelector('.portfolio_name', { state: 'visible' })
     await this.inputField.first().fill('Sports')
     await this.slider.nth(1).click()
@@ -274,7 +273,7 @@ class PORTFOLIO {
     await this.savePortfolioSettings.first().click()
     await this.page.waitForSelector(".portfolio_name >> text='Sports'", { state: 'visible' })
     await expect(this.portfolioName).toHaveText('Sports')
-    await this.base.chooseSymbolTab('Overview')
+    await this.chooseSymbolTab('Overview')
     await this.liveSearch.fill('Adidas')
     await this.page.dragAndDrop('.colored-link-light:has-text("ADIDAS")', '.markets_table_wrapper')
     await this.portfolioNumberField.fill('1')
@@ -290,7 +289,7 @@ class PORTFOLIO {
     await this.portfolioNameField.fill('Manipulations')
     await this.savePortfolioButton.click()
     await this.page.waitForTimeout(6000)
-    await this.base.toolTip('Buy (manual input)')
+    await this.toolTip('Buy (manual input)')
     await expect(this.buyForm).toBeVisible()
     await this.nameInputField.fill('Apple')
     await this.exchangeInputField.fill('NYSE')
@@ -302,27 +301,27 @@ class PORTFOLIO {
   }
 
   async addAllMembersToWatchList() {
-    await this.base.sidePanelTab('Watchlists')
+    await this.sidePanelTab('Watchlists')
     await this.page.waitForSelector("[data-test-name='Add all members to watchlist']", { state: 'visible' })
-    await this.base.toolTip('Add all members to watchlist')
+    await this.toolTip('Add all members to watchlist')
     await this.wlNameField.fill('Portfolio WL')
     await this.savePortfolioButton.click()
     await this.page.waitForSelector(".wl_title >> text='Portfolio WL'", { state: 'visible' })
     await expect(this.wlName).toBeVisible()
-    await this.base.NavigateTo('Watchlists')
-    await this.base.chooseHeaderTab('Personal Watchlist Overview', 'Personal Watchlist Overview')
+    await this.NavigateTo('Watchlists')
+    await this.chooseHeaderTab('Personal Watchlist Overview', 'Personal Watchlist Overview')
     await this.page.waitForSelector('.display-string', { state: 'visible' })
     await this.page.locator('.display-string').click()
     await this.page.locator("[placeholder='Search']").last().fill('Portfolio')
-    await this.base.chooseEllipsis('Portfolio WL')
+    await this.chooseEllipsis('Portfolio WL')
     await this.deleteWLButton.waitFor({ state: 'visible' })
     await this.deleteWLButton.click()
     await this.deleteButton.click()
   }
 
   async openNewBrowser(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
-    await this.base.NavigateToNewBrowser(page, 'Portfolio')
+    const { context, page } = await this.newWindowLogin(browser)
+    await this.NavigateToNewBrowser(page, 'Portfolio')
     await page.locator(".tab-item >> text='Manipulations'")
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.locator('.nav-icon').nth(6).click()])
     await newPage.waitForSelector('.page-title', { state: 'visible' })
@@ -333,7 +332,7 @@ class PORTFOLIO {
   async deletePortfolio() {
     await this.page.waitForTimeout(5000)
     await this.page.waitForSelector('[data-test-name="Delete portfolio"]', { state: 'visible' })
-    await this.base.toolTip('Delete portfolio')
+    await this.toolTip('Delete portfolio')
     await this.deleteButton.click()
   }
 
@@ -350,9 +349,9 @@ class PORTFOLIO {
     await expect(this.DepositedAmmountHeader).toBeVisible()
     await expect(this.totalAssetsHeader).toBeVisible()
     await expect(this.ascIcon).toBeVisible()
-    await this.base.isActive('Portfolio name')
+    await this.isActive('Portfolio name')
     await this.valueHeader.click()
-    await this.base.isActive('Portfolio value')
+    await this.isActive('Portfolio value')
     await expect(this.portfolioValueASC).toBeVisible()
     await this.DepositedAmmountHeader.click()
     await expect(this.portfolioDepositedAmountASC).toBeVisible()
@@ -362,4 +361,4 @@ class PORTFOLIO {
   }
 }
 
-module.exports = { PORTFOLIO }
+module.exports = { Portfolio }

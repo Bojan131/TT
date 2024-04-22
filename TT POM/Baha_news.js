@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class NEWS {
+class Baha_news extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.newsTitle = page.locator('.latest-news-list .news-title')
     this.newsSection = page.locator('.news-section').nth(1)
     this.moreNewsSection = page.locator('.news-section').last()
@@ -63,7 +62,7 @@ class NEWS {
   }
 
   async bahaNews() {
-    await this.base.isActive('Breaking The News')
+    await this.isActive('Breaking The News')
     for (let i = 0; i < 5; ++i) {
       const text1 = await this.latestNews.nth(i).textContent()
       const text2 = await this.leftPanelNews.nth(i).textContent()
@@ -91,7 +90,7 @@ class NEWS {
     await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
     await this.page.waitForTimeout(3000)
     const expectedTexts = ['Markets', 'Economy', 'Business', 'Politics', 'Technology']
-    await this.base.checkItems(this.newsSectionTitle, expectedTexts)
+    await this.checkItems(this.newsSectionTitle, expectedTexts)
   }
 
   async moreNews() {
@@ -140,7 +139,7 @@ class NEWS {
     await this.djEuroStock.hover()
     await this.closeChartButton.first().click()
     await expect(this.djEuroStock).not.toBeVisible()
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.dragAndDrop('.aside_widget_content .table_symbol_link:has-text("Stoxx 50")', '.chart_components_wrapper')
     await expect(this.Stoxx50).toBeVisible()
   }
@@ -152,7 +151,7 @@ class NEWS {
     const countNews1 = await this.newsFilterElements.count()
     await this.newsSearchTab.fill('Apple')
     await this.filterNewsField.nth(4).click()
-    await this.base.chooseEllipsis('Date (from/to)')
+    await this.chooseEllipsis('Date (from/to)')
     await this.applyFilter.click()
     await this.page.waitForTimeout(3000)
     const countNews2 = await this.newsFilterElements.count()
@@ -166,11 +165,11 @@ class NEWS {
     await this.saveFilterInput.fill('Apple')
     await this.saveFilterNameButton.click()
     await this.filterNewsField.last().click()
-    await this.base.chooseEllipsis('Apple')
+    await this.chooseEllipsis('Apple')
     await expect(this.pinFilterToTop).toBeVisible()
     await this.pinFilterToTop.click()
     await this.filterNewsField.last().click()
-    await this.base.chooseEllipsis('Apple')
+    await this.chooseEllipsis('Apple')
     await this.pinToTopSaveButton.click()
     await expect(this.tabItem.last()).toHaveText('Apple')
     await this.deleteButton.click()
@@ -180,11 +179,11 @@ class NEWS {
 
   async changeLanguageAndPackage() {
     await this.filterNewsField.nth(7).click()
-    await this.base.chooseEllipsis('German')
+    await this.chooseEllipsis('German')
     await this.filterNewsField.nth(6).click()
-    await this.base.chooseEllipsis('Select all')
+    await this.chooseEllipsis('Select all')
     await this.page.locator(".absolute-wrapper [placeholder='Search']").fill('AWP Premium Switzerland')
-    await this.base.chooseEllipsis('AWP Premium Switzerland')
+    await this.chooseEllipsis('AWP Premium Switzerland')
     await this.filterNewsField.nth(6).click()
     await this.applyFilter.click({ force: true })
     await expect(this.cbOption.last()).toHaveText('German')
@@ -244,4 +243,4 @@ class NEWS {
   }
 }
 
-module.exports = { NEWS }
+module.exports = { Baha_news }

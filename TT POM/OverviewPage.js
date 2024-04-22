@@ -1,10 +1,9 @@
 const { test, expect } = require('@playwright/test')
 const { Base } = require('../TT Utils/Base')
 
-class OverviewPage {
+class OverviewPage extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.otherNews = page.locator('.aside_widget .link_inactive')
     this.arrowRight = page.locator('.arrow_right')
     this.unPin = page.locator('.aside_widget_header .ws_clear')
@@ -84,7 +83,7 @@ class OverviewPage {
     await this.page.waitForTimeout(4000)
     await this.arrowRight.first().click({ force: true })
     await this.page.waitForTimeout(4000)
-    await this.base.isActive('Breaking The News')
+    await this.isActive('Breaking The News')
   }
 
   async pin() {
@@ -97,7 +96,7 @@ class OverviewPage {
   async TopFlop() {
     await this.winnerBar.first().click()
     await this.page.waitForTimeout(3000)
-    await this.base.isActive('Top/Flop')
+    await this.isActive('Top/Flop')
   }
 
   async minimize() {
@@ -111,7 +110,7 @@ class OverviewPage {
   async rearrange() {
     await this.moveUp.nth(2).click()
     await this.page.waitForTimeout(4000)
-    await this.base.checkIndexPosition('.element-header', 'Interest rates', 3)
+    await this.checkIndexPosition('.element-header', 'Interest rates', 3)
   }
 
   async typeTwoLetters() {
@@ -183,11 +182,11 @@ class OverviewPage {
   async exchangeAndType() {
     await this.exchange.first().click()
     await this.liveSearch.last().fill('NYSE')
-    await this.base.chooseEllipsis('NYSE')
+    await this.chooseEllipsis('NYSE')
     await this.exchange.nth(1).click()
-    await this.base.chooseEllipsis('Stock')
+    await this.chooseEllipsis('Stock')
     await this.fullSearchSubmit.first().click()
-    await this.base.isActive('Stock')
+    await this.isActive('Stock')
   }
 
   async onlyfullSearch() {
@@ -199,7 +198,7 @@ class OverviewPage {
   async currencyPick() {
     const text1 = await this.tabItem.nth(1).textContent()
     await this.searchFilters.first().click()
-    await this.base.chooseEllipsis('USD - US Dollar')
+    await this.chooseEllipsis('USD - US Dollar')
     await this.searchFilters.first().click()
     await this.page.locator('.button_holder .primary').last().click()
     await this.page.waitForTimeout(8000)
@@ -209,10 +208,10 @@ class OverviewPage {
 
   async chooseBond() {
     await this.searchFilters.last().click()
-    await this.base.chooseEllipsis('Bond')
+    await this.chooseEllipsis('Bond')
     await this.page.locator('.button_holder .primary').last().click()
     await this.page.waitForTimeout(8000)
-    await this.base.isActive('Bonds')
+    await this.isActive('Bonds')
   }
 
   async groupExchanges() {
@@ -273,7 +272,7 @@ class OverviewPage {
   async fundSearch() {
     await this.FundSearch.fill('black rock')
     await this.fundType.nth(1).click()
-    await this.base.chooseEllipsis('Money Market')
+    await this.chooseEllipsis('Money Market')
     await this.fundSubmit.click()
     await this.page.waitForTimeout(3000)
     const hrefValue = await this.blackRock.first().getAttribute('href')
@@ -283,16 +282,16 @@ class OverviewPage {
   async simpleSearch() {
     await this.page.locator("[data-rbd-draggable-id='leftFundsSearch'] [type='button']:has-text('Simple search')").click()
     await this.page.waitForTimeout(3000)
-    await this.base.isActive('Simple search')
+    await this.isActive('Simple search')
   }
 
   async expertSearch() {
     await this.fundType.last().click()
     await this.search.fill('Switzerland')
-    await this.base.chooseEllipsis('Switzerland')
+    await this.chooseEllipsis('Switzerland')
     await this.page.locator("[data-rbd-draggable-id='leftFundsSearch'] [type='button']:has-text('Expert search')").click()
     await this.page.waitForTimeout(3000)
-    await this.base.isActive('Expert search')
+    await this.isActive('Expert search')
   }
 
   async chooseWLActionButton(name) {
@@ -320,7 +319,7 @@ class OverviewPage {
   }
 
   async createWL() {
-    await this.base.NavigateTo('Watchlists')
+    await this.NavigateTo('Watchlists')
     await expect(this.wsCreate.first()).toBeVisible()
     await expect(this.wsCreate.last()).toBeVisible()
   }
@@ -349,11 +348,11 @@ class OverviewPage {
     await this.page.locator("[value='Watchlist']").fill('DAX')
     await this.watchlistSubmit.click()
     await this.page.waitForTimeout(3000)
-    await this.base.sidePanelTab('Watchlists')
+    await this.sidePanelTab('Watchlists')
     await this.page.locator(".wl_title >> text='DAX'").waitFor({ state: 'visible' })
     await expect(this.page.locator('.wl_title >> text="DAX"')).toBeVisible()
-    await this.base.NavigateTo('Watchlists')
-    await this.base.chooseHeaderTab('All Watchlists', 'All Watchlists')
+    await this.NavigateTo('Watchlists')
+    await this.chooseHeaderTab('All Watchlists', 'All Watchlists')
     await this.page.locator('.exp-handle').click()
     await expect(this.page.locator('.tab-content-txt >> text="DAX"')).toBeVisible()
   }
@@ -543,7 +542,7 @@ class OverviewPage {
   }
 
   async makeFundsWatchlist() {
-    await this.base.NavigateTo('Funds')
+    await this.NavigateTo('Funds')
     await this.page.locator('.markets_table_wrapper .table_symbol_link').first().click({ button: 'right' })
     await this.agMenu.click()
     await this.typeWatchlistName.fill('111')
@@ -566,7 +565,7 @@ class OverviewPage {
     await this.page.waitForTimeout(3000)
     await expect(this.compareTitle).toHaveText('Fund comparison')
     await this.page.locator('.display-string').last().click()
-    await this.base.chooseEllipsis('Countries')
+    await this.chooseEllipsis('Countries')
     await this.page.waitForSelector('#pie-highchart-funds-comparison-pie-chart0', { state: 'visible' })
     await expect(this.comparisonPie).toBeVisible()
   }
@@ -582,7 +581,7 @@ class OverviewPage {
     await this.symbolName.first().click()
     await this.page.waitForTimeout(3000)
     await this.page.locator('.header-control').nth(4).click()
-    await this.base.chooseSymbolTab('Technical')
+    await this.chooseSymbolTab('Technical')
     await this.page.waitForTimeout(3000)
     await this.page.locator('.header-control').nth(4).click()
     await expect(this.shortName.first()).toHaveText('Apple Inc - Overview')

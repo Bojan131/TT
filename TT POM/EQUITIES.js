@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class EQUITIES {
+class Equities extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.asideWidgetSymbolDax = page.locator(".aside_widget_content .table_symbol_link:has-text('DAX')")
     this.groupName = page.locator('.ag-group-value')
     this.columnPerformance = page.locator('.column_performance')
@@ -54,9 +53,9 @@ class EQUITIES {
   }
 
   async openEquities() {
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.asideWidgetSymbolDax.first().click()
-    await this.base.checkSecurity('DAX', 'Equities')
+    await this.checkSecurity('DAX', 'Equities')
   }
 
   async mergeGroups() {
@@ -84,14 +83,14 @@ class EQUITIES {
   async Overview() {
     await this.page.waitForSelector('.tabs_content .ag-header-cell-text', { state: 'visible' })
     const expectedTexts = ['Name', 'Last', 'Date/Time', 'Chg. (%)', 'Volume']
-    await this.base.checkItems(this.headerText, expectedTexts)
+    await this.checkItems(this.headerText, expectedTexts)
   }
 
   async OverviewColumnPicker() {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async Chart() {
@@ -102,13 +101,13 @@ class EQUITIES {
 
   async changeChart() {
     const screenshotBefore = await this.chartImage.first().screenshot()
-    await this.base.toolTip('Chart type')
+    await this.toolTip('Chart type')
     await this.mountainChart.last().click()
     await this.page.waitForSelector('.ws-image-chart', { state: 'visible' })
-    await this.base.toolTip('Period')
+    await this.toolTip('Period')
     await this.chartPeriodOneYear.last().click()
     await this.page.waitForSelector('.ws-image-chart', { state: 'visible' })
-    await this.base.toolTip('Indicator')
+    await this.toolTip('Indicator')
     await this.chartIndicatorMoneyFlow.last().click()
     await this.page.waitForSelector('.ws-image-chart', { state: 'visible' })
     const screenshotAfter = await this.chartImage.first().screenshot()
@@ -117,14 +116,14 @@ class EQUITIES {
 
   async QuoteBoard() {
     await this.page.waitForSelector('.market_overview_wrapper', { state: 'visible' })
-    await this.base.toolTip('Quoteboard')
+    await this.toolTip('Quoteboard')
     await this.page.waitForSelector('.qb-block', { state: 'visible' })
     await expect(this.quoteboard.last()).toBeVisible()
     await expect(this.chartQuoteboardOption.last()).toBeVisible()
   }
 
   async changeQuotboard() {
-    await this.base.toolTip('Sort by')
+    await this.toolTip('Sort by')
     await this.sortByIntraday.last().click()
     await this.page.waitForTimeout(5000)
     const attributeName = await this.page.locator('.nav-toolbar-active').nth(5).getAttribute('data-test-name')
@@ -133,53 +132,53 @@ class EQUITIES {
 
   async indices() {
     await this.page.waitForSelector(".page_content:has-text('Indices')", { state: 'visible' })
-    await this.base.chooseHeaderTab('Indices', 'Indices')
+    await this.chooseHeaderTab('Indices', 'Indices')
     await this.page.waitForSelector('.tab-item', { state: 'visible' })
-    await this.base.isActive('World')
+    await this.isActive('World')
     await this.page.waitForSelector(".ag-group-value:has-text('Europe')", { state: 'visible' })
     const expectedTexts = ['Europe', 'America', 'Asia/Pacific', 'Africa/Middle east']
-    await this.base.checkItems(this.groupName, expectedTexts)
+    await this.checkItems(this.groupName, expectedTexts)
   }
 
   async indicesColumnPicker() {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async Europe() {
-    await this.base.chooseSymbolTab('Europe')
+    await this.chooseSymbolTab('Europe')
     await this.page.waitForSelector(".page_content:has-text('Austria')", { state: 'visible' })
     await this.page.waitForTimeout(3000)
 
     const expectedTexts = ['Austria', 'Belgium', 'Czech Republic', 'Denmark']
-    await this.base.checkItems(this.groupName, expectedTexts)
+    await this.checkItems(this.groupName, expectedTexts)
   }
 
   async USA() {
-    await this.base.chooseSymbolTab('USA')
+    await this.chooseSymbolTab('USA')
     await this.page.waitForSelector(".page_content:has-text('Dow Jones')", { state: 'visible' })
     const expectedTexts = ['Dow Jones', 'S&P', 'NYSE', 'NASDAQ']
-    await this.base.checkItems(this.groupName, expectedTexts)
+    await this.checkItems(this.groupName, expectedTexts)
   }
 
   async indexReports() {
     await this.page.waitForSelector(".tab-item:has-text('SMI PR')", { state: 'visible' })
-    await this.base.isActive('SMI PR')
+    await this.isActive('SMI PR')
     await this.page.waitForTimeout(5000)
     const count = await this.indexReportsChart.count()
     expect(count).toEqual(2)
     await this.page.waitForSelector(".element-header:has-text('Gainers')", { state: 'visible' })
     const expectedTexts = ['Gainers', 'Losers']
-    await this.base.checkItems(this.indexReportsElementHeader, expectedTexts)
+    await this.checkItems(this.indexReportsElementHeader, expectedTexts)
   }
 
   async indexReportsColumnPicker() {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async ATR() {
@@ -201,13 +200,13 @@ class EQUITIES {
     }
     await this.page.waitForSelector(".page-content  .ag-header-cell-text:has-text('VWAP Chg. (%)')", { state: 'visible' })
     const expectedTexts = ['VWAP', 'VWAP date/time', 'VWAP Chg.', 'VWAP Chg. (%)']
-    await this.base.checkItems(this.indexReportsHeaderText, expectedTexts)
+    await this.checkItems(this.indexReportsHeaderText, expectedTexts)
   }
 
   async settingsIcon() {
     const count1 = await this.tabItem.count()
     await this.SettingsIcon.first().click()
-    await this.base.chooseEllipsis('SPI TR')
+    await this.chooseEllipsis('SPI TR')
     await this.applyButton.click()
     await this.page.waitForTimeout(3000)
     const count2 = await this.tabItem.count()
@@ -230,20 +229,20 @@ class EQUITIES {
 
   async CountryReports() {
     await this.page.waitForSelector('.tab-item', { state: 'visible' })
-    await this.base.isActive('USA')
+    await this.isActive('USA')
     await this.page.waitForSelector(".element-header:has-text('Gainers')", { state: 'visible' })
     const expectedTexts = ['Index overview', 'Economic Data', 'Unusual Volumes', 'Newsaaa']
-    await this.base.checkItems(this.countryReportsHeaderName, expectedTexts)
+    await this.checkItems(this.countryReportsHeaderName, expectedTexts)
     await expect(this.corporateCalnedar).toBeVisible()
     const expectedTexts2 = ['Gainers', 'Losers']
-    await this.base.checkItems(this.indexReportsElementHeader, expectedTexts2)
+    await this.checkItems(this.indexReportsElementHeader, expectedTexts2)
   }
 
   async countryReportsColumnPicker() {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async HotStocks() {
@@ -260,7 +259,7 @@ class EQUITIES {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async HotStockOneYearHighestHigh() {
@@ -286,8 +285,8 @@ class EQUITIES {
     await this.columnPicker.click()
     await this.page.waitForSelector('.ag-column-select-column-label', { state: 'visible' })
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 }
 
-module.exports = { EQUITIES }
+module.exports = { Equities }

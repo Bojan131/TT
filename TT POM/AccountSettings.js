@@ -1,10 +1,9 @@
 const { test, expect } = require('@playwright/test')
 const { Base } = require('../TT Utils/Base')
 
-class AccountSettings {
+class AccountSettings extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.drawer = page.locator('.open_drawer')
     this.firstLayout = page.locator("[d='M0 0h7v30H0zM9 0h13v30H9zM24 0h26v30H24z']")
     this.secondLayout = page.locator("[d='M0 0h7v30H0zM9 0h41v30H9z']")
@@ -49,10 +48,10 @@ class AccountSettings {
     const fs = require('fs')
     const PNG = require('pngjs').PNG
     const pixelmatch = require('pixelmatch')
-    await this.base.optionPicker('Ticker', 'General')
-    await this.base.deactivateActivateTicker('Ticker1', 'off')
-    await this.base.deactivateActivateTicker('Ticker2', 'off')
-    await this.base.deactivateActivateTicker('Ticker3', 'off')
+    await this.optionPicker('Ticker', 'General')
+    await this.deactivateActivateTicker('Ticker1', 'off')
+    await this.deactivateActivateTicker('Ticker2', 'off')
+    await this.deactivateActivateTicker('Ticker3', 'off')
     await this.slider.nth(1).click()
     await this.page.waitForTimeout(3000)
     const screenshot1 = await this.page.screenshot()
@@ -85,10 +84,10 @@ class AccountSettings {
   async disablePush() {
     const PNG = require('pngjs').PNG
     const pixelmatch = require('pixelmatch')
-    await this.base.optionPicker('Ticker', 'General')
-    await this.base.deactivateActivateTicker('Ticker1', 'off')
-    await this.base.deactivateActivateTicker('Ticker2', 'off')
-    await this.base.deactivateActivateTicker('Ticker3', 'off')
+    await this.optionPicker('Ticker', 'General')
+    await this.deactivateActivateTicker('Ticker1', 'off')
+    await this.deactivateActivateTicker('Ticker2', 'off')
+    await this.deactivateActivateTicker('Ticker3', 'off')
     await this.slider.nth(1).click()
     await this.page.waitForTimeout(4000)
     const screenshot1 = await this.page.screenshot()
@@ -109,30 +108,30 @@ class AccountSettings {
   }
 
   async ChartTypeCandle() {
-    await this.base.optionPicker('Chart', 'General')
+    await this.optionPicker('Chart', 'General')
     await this.displayString.first().click()
-    await this.base.chooseEllipsis('Candlestick')
+    await this.chooseEllipsis('Candlestick')
     await this.displayString.last().click()
-    await this.base.chooseEllipsis('5 Years')
-    await this.base.NavigateTo('Equities')
+    await this.chooseEllipsis('5 Years')
+    await this.NavigateTo('Equities')
     await this.page.waitForTimeout(3000)
-    await this.base.toolTip('Charts')
+    await this.toolTip('Charts')
     await this.page.waitForTimeout(2000)
     await this.chartImage.first().click()
     await this.page.waitForTimeout(7000)
-    await this.base.toolTip('Reset Chart settings')
+    await this.toolTip('Reset Chart settings')
     await this.page.waitForTimeout(7000)
     const dataValue = await this.chartTypeElement.getAttribute('data-value')
     expect(dataValue).toBe('candle')
-    await this.base.isActive('5 Years')
+    await this.isActive('5 Years')
   }
 
   async disableHTML5Chart() {
-    await this.base.optionPicker('Chart', 'General')
+    await this.optionPicker('Chart', 'General')
     await this.page.locator('.accordion-content .slider').click()
     await this.page.waitForTimeout(1000)
-    await this.base.NavigateTo('Equities')
-    await this.base.toolTip('Charts')
+    await this.NavigateTo('Equities')
+    await this.toolTip('Charts')
     await this.page.waitForTimeout(2000)
     await this.chartImage.first().click()
     await this.page.waitForTimeout(4000)
@@ -143,33 +142,33 @@ class AccountSettings {
     await this.page.waitForTimeout(15000)
     const count = await this.symbolText.count()
     expect(count).toBe(1)
-    await this.base.optionPicker('Chart', 'General')
+    await this.optionPicker('Chart', 'General')
     await this.page.locator('.accordion-content .slider').click()
   }
 
   async doubleClick1(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
-    await this.base.optionPickerNewBrowser(page, 'Chart', 'General')
+    const { context, page } = await this.newWindowLogin(browser)
+    await this.optionPickerNewBrowser(page, 'Chart', 'General')
     await page.locator('.checkmark').first().click()
     await page.waitForTimeout(1000)
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.locator('.table_symbol_link').first().dblclick()])
     await newPage.waitForTimeout(6000)
-    await this.base.checkChartNewBrowser(newPage)
+    await this.checkChartNewBrowser(newPage)
   }
 
   async doubleClick2() {
-    await this.base.optionPicker('Chart', 'General')
+    await this.optionPicker('Chart', 'General')
     await this.page.locator('.checkmark').last().click()
     await this.page.waitForTimeout(1000)
     await this.page.locator('.table_symbol_link').first().dblclick()
     await this.page.waitForTimeout(4000)
-    await this.base.checkChart()
+    await this.checkChart()
   }
 
   async mostVisited() {
-    await this.base.optionPicker('Data', 'General')
+    await this.optionPicker('Data', 'General')
     await this.displayString.nth(2).click()
-    await this.base.chooseEllipsis('15')
+    await this.chooseEllipsis('15')
     for (let i = 0; i <= 15; ++i) {
       await this.page.locator('.side-content .table_symbol_link').nth(i).click()
     }
@@ -180,18 +179,18 @@ class AccountSettings {
   }
 
   async economicData() {
-    await this.base.optionPicker('Data', 'General')
+    await this.optionPicker('Data', 'General')
     await this.page.locator("[name='economicEventsNumber']").last().click()
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     const count = await this.economicdata.count()
     expect(count).toEqual(6)
   }
 
   async events() {
-    await this.base.optionPicker('Data', 'General')
+    await this.optionPicker('Data', 'General')
     await this.displayString.first().click()
-    await this.base.chooseEllipsis('Only US / Japan - High impact')
-    await this.base.sidePanelTab('Markets')
+    await this.chooseEllipsis('Only US / Japan - High impact')
+    await this.sidePanelTab('Markets')
     const dateStrings = await this.page.$$eval('.date_field', elements => elements.map(element => element.textContent.trim()))
 
     const dates = dateStrings.map(dateString => {
@@ -206,16 +205,16 @@ class AccountSettings {
   }
 
   async openFavourites(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
-    await this.base.NavigateToNewBrowser(page, 'Equities')
+    const { context, page } = await this.newWindowLogin(browser)
+    await this.NavigateToNewBrowser(page, 'Equities')
     await page.locator('.header-control').nth(4).click()
-    await this.base.chooseHeaderTabNewBrowser(page, 'Indices', 'Indices')
+    await this.chooseHeaderTabNewBrowser(page, 'Indices', 'Indices')
     await page.locator('.header-control').nth(4).click()
-    await this.base.chooseHeaderTabNewBrowser(page, 'Index Reports', 'Index Reports')
+    await this.chooseHeaderTabNewBrowser(page, 'Index Reports', 'Index Reports')
     await page.locator('.header-control').nth(4).click()
-    await this.base.optionPickerNewBrowser(page, 'Data', 'General')
+    await this.optionPickerNewBrowser(page, 'Data', 'General')
     await page.locator('.accordion-content .display-string').nth(1).click()
-    await this.base.chooseEllipsisNewBrowser(page, '3')
+    await this.chooseEllipsisNewBrowser(page, '3')
     await page.waitForTimeout(1000)
     await page.locator('.header-control').nth(1).click()
     await page.waitForTimeout(10000)
@@ -226,13 +225,13 @@ class AccountSettings {
   }
 
   async russianLanguage() {
-    await this.base.optionPicker('Time and language', 'General')
+    await this.optionPicker('Time and language', 'General')
     await this.displayString.first().click()
-    await this.base.chooseEllipsis('Pусский')
+    await this.chooseEllipsis('Pусский')
     await this.page.waitForTimeout(1000)
     await expect(this.footerText).toHaveText('© 2024 baha GmbH. Все права защищены.')
     await this.displayString.first().click()
-    await this.base.chooseEllipsis('English')
+    await this.chooseEllipsis('English')
   }
 
   async takeTime(array) {
@@ -252,15 +251,15 @@ class AccountSettings {
     // This test checks if economic data hours are 5 hours apart in eruope and america region
     let array1 = []
     await this.page.waitForSelector('.table-widget', { state: 'visible' })
-    await this.base.optionPicker('Time and language', 'General')
+    await this.optionPicker('Time and language', 'General')
     await this.displayString.nth(2).click()
-    await this.base.chooseEllipsis('America')
+    await this.chooseEllipsis('America')
     await this.page.waitForSelector('.table-widget', { state: 'visible' })
-    await this.base.optionPicker('Time and language', 'General')
+    await this.optionPicker('Time and language', 'General')
     await this.displayString.nth(3).click()
     await this.searchInput.fill('Aruba')
     await this.page.waitForSelector('.ellipsis-option', { state: 'visible' })
-    await this.base.chooseEllipsis('Aruba')
+    await this.chooseEllipsis('Aruba')
     await this.page.waitForSelector('.table-widget', { state: 'visible' })
 
     let array2 = []
@@ -282,10 +281,10 @@ class AccountSettings {
   }
 
   async settingsWatchlists(option) {
-    await this.base.optionPicker('Settings watchlists', 'General')
+    await this.optionPicker('Settings watchlists', 'General')
     await this.displayString.click()
-    await this.base.chooseEllipsis(option)
-    await this.base.NavigateTo('Watchlists')
+    await this.chooseEllipsis(option)
+    await this.NavigateTo('Watchlists')
     await this.page.waitForTimeout(3000)
     await this.page.locator("[href='/watchlist/all-watchlists']").click()
     const count = await this.tabContent.count()
@@ -301,25 +300,25 @@ class AccountSettings {
   }
 
   async keyboardFunctions() {
-    await this.base.NavigateTo('Equities')
-    await this.base.optionPicker('Keyboard function keys', 'General')
+    await this.NavigateTo('Equities')
+    await this.optionPicker('Keyboard function keys', 'General')
     await this.keyboardSlider.click()
     await this.page.waitForTimeout(1000)
     await this.page.keyboard.press('F12')
-    await this.base.isActive('Equities')
+    await this.isActive('Equities')
   }
 
   async newsMarketTab() {
-    await this.base.optionPicker('News display in Markets tab (Overview pane)', 'News')
+    await this.optionPicker('News display in Markets tab (Overview pane)', 'News')
     await this.newsValue10.click()
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.waitForTimeout(5000)
     const count = await this.headLine.count()
     expect(count).toEqual(10)
   }
 
   async newsDetailsPage() {
-    await this.base.optionPicker('News settings', 'News')
+    await this.optionPicker('News settings', 'News')
     await this.newsValue10.click()
     await this.search.fill('Apple')
     await this.symbolName.first().click()
@@ -329,7 +328,7 @@ class AccountSettings {
   }
 
   async newsAge() {
-    await this.base.optionPicker('News settings', 'News')
+    await this.optionPicker('News settings', 'News')
     await this.newsValue1.first().click()
     await this.search.fill('Apple')
     await this.symbolName.first().click()
@@ -361,7 +360,7 @@ class AccountSettings {
   }
 
   async FontSize() {
-    await this.base.optionPicker('News settings', 'News')
+    await this.optionPicker('News settings', 'News')
     await this.newsValue1.last().click()
     const count = this.headLine.count()
     for (let i = 0; i < count; ++i) {
@@ -370,7 +369,7 @@ class AccountSettings {
   }
 
   async displayNews() {
-    await this.base.optionPicker('Display news time in first 24 hours as:', 'News')
+    await this.optionPicker('Display news time in first 24 hours as:', 'News')
     await this.page.locator(".accordion-content [type='button']").last().click()
     await this.page.waitForTimeout(2000)
     const count = await this.timeAgo.count()
@@ -387,10 +386,10 @@ class AccountSettings {
   }
 
   async newsVideoTicker() {
-    await this.base.optionPicker('News streams', 'News')
+    await this.optionPicker('News streams', 'News')
     await this.sliderNews.first().click()
     await this.sliderNews.last().click()
-    await this.base.NavigateTo('baha News')
+    await this.NavigateTo('baha News')
     await this.page.waitForTimeout(3000)
     await expect(this.page.locator('.news-ticker-wrapper')).toBeHidden()
     await expect(this.page.locator('.live-tv-iframe')).toBeHidden()

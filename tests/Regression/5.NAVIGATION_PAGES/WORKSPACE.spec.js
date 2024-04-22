@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
-const { WORKSPACE } = require('../../../TT POM/WORKSPACE')
+const { Workspace } = require('../../../TT POM/Workspace')
 const { Base } = require('../../../TT Utils/Base')
 const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
@@ -10,11 +10,12 @@ let isDataReset = false
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
+  workspace = new Workspace(page)
   base = new Base(page)
+
   await loginpage.goTo()
   await loginpage.loginWS(dataset.username, dataset.password)
   await loginpage.successfullLogin()
-  workspace = new WORKSPACE(page)
   await base.NavigateTo('Workspace')
   if (!isDataReset) {
     await base.resetData()

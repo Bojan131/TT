@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class FUNDS {
+class Funds extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.headerTitle = page.locator('.label')
     this.performance = page.locator('.performance')
     this.oneYear = page.locator("[value='1 Year']")
@@ -50,7 +49,7 @@ class FUNDS {
 
   async equityMore() {
     await this.equityMoreIcon.click()
-    await this.base.isActive('Simple search')
+    await this.isActive('Simple search')
     await this.page.waitForSelector(".cb_options >> text='Equity'", { state: 'visible' })
     await expect(this.page.locator('.cb_options').first()).toHaveText('Equity')
     await expect(this.simpleSerachTable).toBeVisible()
@@ -65,18 +64,18 @@ class FUNDS {
 
   async filterTopPerformer() {
     await this.topPerformerDropDown.first().click()
-    await this.base.chooseEllipsis('Equity')
+    await this.chooseEllipsis('Equity')
     await expect(this.dropDownTextBox.first()).toHaveText('Equity')
     await this.topPerformerDropDown.nth(1).click()
     await this.searchTopPerformer.fill('Europe')
-    await this.base.chooseEllipsis('Europe')
+    await this.chooseEllipsis('Europe')
     await expect(this.dropDownTextBox.nth(1)).toHaveText('Europe')
     await this.topPerformerDropDown.nth(2).click()
     await this.searchTopPerformer.fill('Mixed Sectors')
-    await this.base.chooseEllipsis('Mixed Sectors')
+    await this.chooseEllipsis('Mixed Sectors')
     await expect(this.dropDownTextBox.nth(2)).toHaveText('Mixed Sectors')
     await this.topPerformerDropDown.last().click()
-    await this.base.chooseEllipsis('Austria')
+    await this.chooseEllipsis('Austria')
     await expect(this.dropDownTextBox.last()).toHaveText('Austria')
   }
 
@@ -90,7 +89,7 @@ class FUNDS {
   async simpleSearchFilter() {
     await this.simpleSerachField.fill('black rock')
     await this.dropDownSearchField.nth(1).click()
-    await this.base.chooseEllipsis('Money Market')
+    await this.chooseEllipsis('Money Market')
     await this.simpleSerachSubmitButton.click()
     await this.page.waitForSelector(".page-content .table_symbol_link:has-text('Black Rock')", { state: 'visible' })
     await expect(this.symbol.first()).toContainText(/Black Rock/i)
@@ -105,7 +104,7 @@ class FUNDS {
   async expertSearchFilter() {
     await this.simpleSerachField.fill('Van')
     await this.dropDownSearchField.nth(1).click()
-    await this.base.chooseEllipsis('Mixed Fund')
+    await this.chooseEllipsis('Mixed Fund')
     await this.simpleSerachSubmitButton.click()
     await this.page.waitForSelector(".page-content .table_symbol_link:has-text('Vanguard')", { state: 'visible' })
     await expect(this.symbol.nth(1)).toContainText(/Vanguard/i)
@@ -113,7 +112,7 @@ class FUNDS {
 
   async expertSearchPerformance() {
     await this.dropDownSearchField.nth(8).click()
-    await this.base.chooseEllipsis('1 Year')
+    await this.chooseEllipsis('1 Year')
     await this.sliderInput.nth(2).fill('5.25')
     await this.simpleSerachSubmitButton.click()
     await this.page.waitForSelector(".page-content .ag-header-cell-text >> text='Volatility 1Y'", { state: 'visible' })
@@ -130,13 +129,13 @@ class FUNDS {
   async esgFundsFilter() {
     const count1 = await this.symbol.count()
     await this.esgFundsdropDownMenu.first().click()
-    await this.base.chooseEllipsis('Mixed Fund')
+    await this.chooseEllipsis('Mixed Fund')
     await this.esgFundsdropDownMenu.nth(1).click()
     await this.esgFundsSearchField.fill('Europe')
-    await this.base.chooseEllipsis('Europe')
+    await this.chooseEllipsis('Europe')
     await this.esgFundsdropDownMenu.nth(2).click()
     await this.esgFundsSearchField.fill('mixed')
-    await this.base.chooseEllipsis('Mixed Fund/Focus Equity')
+    await this.chooseEllipsis('Mixed Fund/Focus Equity')
     await this.sliderInput.first().fill('33.6')
     const count2 = await this.symbol.count()
     expect(count1).not.toEqual(count2)
@@ -160,4 +159,4 @@ class FUNDS {
   }
 }
 
-module.exports = { FUNDS }
+module.exports = { Funds }

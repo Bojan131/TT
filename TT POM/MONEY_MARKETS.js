@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class MONEY_MARKETS {
+class Money_Markets extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.headerTitle = page.locator('.fixed_income_overview_wrapper .justify-space-between')
     this.soniaSymbol = page.locator("[data-type='gbp']")
     this.sonia1M = page.locator(".fixed_income_overview_wrapper .table_symbol_link >> text='SONIA TSRR 1M'")
@@ -27,7 +26,7 @@ class MONEY_MARKETS {
 
   async moneyMarketsOverview() {
     const expectedTexts = ['Interest market overview', 'Key interest rates', 'Interbank interest rates', 'SOFR USD']
-    await this.base.checkItems(this.headerTitle, expectedTexts)
+    await this.checkItems(this.headerTitle, expectedTexts)
   }
 
   async sonia() {
@@ -35,7 +34,7 @@ class MONEY_MARKETS {
     await this.page.waitForSelector(".fixed_income_overview_wrapper .table_symbol_link >> text='SONIA TSRR 1M'", { state: 'visible' })
     await this.sonia1M.click()
     await expect(this.headerName).toHaveText('SONIA TSRR 1M')
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.sideTabSonia1M.click()
     await expect(this.headerName).toHaveText('SONIA TSRR 1M')
   }
@@ -50,9 +49,9 @@ class MONEY_MARKETS {
     await this.page.waitForSelector('.highcharts-background', { state: 'visible' })
     await expect(this.highChart).toBeVisible()
     const expectedTexts1 = ['Inflation YOY', 'Inflation Historical']
-    await this.base.checkItems(this.inflationTableName, expectedTexts1)
+    await this.checkItems(this.inflationTableName, expectedTexts1)
     const expectedTexts2 = ['Austria', 'European Union', 'Germany', 'Russian Federation', 'Switzerland', 'United Kingdom', 'United States of America']
-    await this.base.checkItems(this.highChartCountries, expectedTexts2)
+    await this.checkItems(this.highChartCountries, expectedTexts2)
   }
 
   async checkboxes() {
@@ -60,13 +59,13 @@ class MONEY_MARKETS {
     await this.checkboxJapan.click()
     await this.page.waitForSelector("[text-anchor='start'] >> text='Japan'", { state: 'visible' })
     const expectedTexts2 = ['Austria', 'European Union', 'Germany', 'Russian Federation', 'Switzerland', 'United Kingdom', 'Japan']
-    await this.base.checkItems(this.highChartCountries, expectedTexts2)
+    await this.checkItems(this.highChartCountries, expectedTexts2)
   }
 
   async inflationHistorical() {
     const screenshotBefore = await this.countryInflationRates.screenshot()
     await this.chooseCountry.click()
-    await this.base.chooseEllipsis('Australia')
+    await this.chooseEllipsis('Australia')
     await this.page.waitForTimeout(3000)
     const screenshotAfter = await this.countryInflationRates.screenshot()
     expect(screenshotBefore.length).not.toEqual(screenshotAfter.length)
@@ -86,4 +85,4 @@ class MONEY_MARKETS {
   }
 }
 
-module.exports = { MONEY_MARKETS }
+module.exports = { Money_Markets }

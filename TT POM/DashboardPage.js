@@ -2,15 +2,13 @@ const { expect } = require('@playwright/test')
 const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 
-class DashboardPage {
+class DashboardPage extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.navigationTitle = page.locator('.navigation-title')
     this.footerText = page.locator('.footer-content span')
     this.search = page.locator("[placeholder='Search']")
     this.symbolName = page.locator('.search_category .symbol_name')
-    this.browser = this.browser
     this.OptionButton = page.locator('.open_drawer')
     this.TickerRow = page.locator('.ticker_row')
     this.buttonBig = page.locator("[value='Big']")
@@ -23,13 +21,13 @@ class DashboardPage {
   }
 
   async chooseOption() {
-    await this.base.optionPicker('Settings start page', 'General')
+    await this.optionPicker('Settings start page', 'General')
     await this.page.locator('.start_page_content .reactor').click()
     await this.page.waitForTimeout(1000)
   }
 
   async chooseSymbolandClickLogo() {
-    await this.base.NavigateTo('Funds')
+    await this.NavigateTo('Funds')
     await this.page.locator('.app-logo').click()
     await expect(this.page.locator('.page-title')).toHaveText('Economic Data')
   }
@@ -121,12 +119,12 @@ class DashboardPage {
     }
   }
   async doubleClick(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
+    const { context, page } = await this.newWindowLogin(browser)
     await page.locator("[placeholder='Search']").fill('BMW')
     await page.waitForTimeout(3000)
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.dblclick("[title='BAY.MOTOREN WERKE AG ST']")])
     await newPage.waitForTimeout(10000)
-    await this.base.checkChartNewBrowser(newPage)
+    await this.checkChartNewBrowser(newPage)
   }
 
   async deactivate(option) {
@@ -143,8 +141,8 @@ class DashboardPage {
     await this.page.locator(`text=${textToFind}`).click()
     await this.page.waitForTimeout(2000)
     await expect(this.page.locator('.page-title')).toHaveText('Equities')
-    await this.base.isActive('World')
-    await this.base.isActive('Indices')
+    await this.isActive('World')
+    await this.isActive('Indices')
   }
 
   async ate() {
@@ -154,7 +152,7 @@ class DashboardPage {
     await this.page.waitForTimeout(2000)
     await expect(this.page.locator('.page-title')).toHaveText('Economic Data')
     await this.page.waitForSelector(".long_name >> text='Current Week'", { state: 'visible' })
-    await this.base.isActive('Current Week')
+    await this.isActive('Current Week')
     await expect(this.page.locator('.cb_options')).toHaveText('Austria')
   }
 
@@ -176,10 +174,10 @@ class DashboardPage {
   }
 
   async dropdownTicker() {
-    await this.base.optionPicker('Ticker', 'General')
+    await this.optionPicker('Ticker', 'General')
     let emptyArray = []
     await this.page.locator('.accordion-title-text').last().waitFor()
-    await this.base.deactivateActivateTicker('Ticker1', 'on')
+    await this.deactivateActivateTicker('Ticker1', 'on')
     await this.countTicker(1)
     await this.page.locator('.display-string').nth(0).click()
 
@@ -211,8 +209,8 @@ class DashboardPage {
   }
 
   async tickerBig() {
-    await this.base.optionPicker('Ticker', 'General')
-    await this.base.deactivateActivateTicker('Ticker1', 'on')
+    await this.optionPicker('Ticker', 'General')
+    await this.deactivateActivateTicker('Ticker1', 'on')
     await this.buttonBig.nth(0).click()
     await this.displaySymbolTicker('Europe', 0)
     await this.countTicker(1)
@@ -224,8 +222,8 @@ class DashboardPage {
   }
 
   async tickerTwo() {
-    await this.base.optionPicker('Ticker', 'General')
-    await this.base.deactivateActivateTicker('Ticker1', 'on')
+    await this.optionPicker('Ticker', 'General')
+    await this.deactivateActivateTicker('Ticker1', 'on')
     await this.page.locator('.slider').nth(4).click()
     await this.rightButton.nth(1).click()
     await this.displaySymbolTicker('SMI PR', 1)
@@ -238,8 +236,8 @@ class DashboardPage {
   }
 
   async compareTicker(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
-    await this.base.optionPickerNewBrowser(page, 'Ticker', 'General')
+    const { context, page } = await this.newWindowLogin(browser)
+    await this.optionPickerNewBrowser(page, 'Ticker', 'General')
     const text = await page.locator('.ticker_settings_wrapper').nth(1).textContent()
     if (text.includes('Deactivate')) {
       await page.locator('.drawer-control .slider').nth(4).click()
@@ -255,14 +253,14 @@ class DashboardPage {
   }
 
   async helpButton(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
+    const { context, page } = await this.newWindowLogin(browser)
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.locator('.header-control').nth(5).click()])
     await newPage.waitForTimeout(8000)
     await expect(newPage).toHaveURL('https://webstation.baha.com/api/help/en-dark/index.html')
   }
 
   async newBrowser(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
+    const { context, page } = await this.newWindowLogin(browser)
     const currentUrl = page.url()
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.locator('.header-control').nth(2).click()])
     await newPage.waitForTimeout(8000)
@@ -271,9 +269,9 @@ class DashboardPage {
   }
 
   async favourites(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
+    const { context, page } = await this.newWindowLogin(browser)
     const compare = page.locator('.header-control svg g path').nth(6)
-    await this.base.NavigateTo('Commodities')
+    await this.NavigateTo('Commodities')
     await page.waitForTimeout(3000)
     await page.locator('.header-control').nth(4).click()
     await page.waitForTimeout(3000)

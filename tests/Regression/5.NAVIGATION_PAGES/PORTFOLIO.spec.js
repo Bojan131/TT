@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
-const { PORTFOLIO } = require('../../../TT POM/PORTFOLIO')
+const { Portfolio } = require('../../../TT POM/Portfolio')
 const { Base } = require('../../../TT Utils/Base')
 const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
@@ -11,11 +11,12 @@ let isDataReset = false
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(36)') {
     loginpage = new LoginPage(page)
+    portfolio = new Portfolio(page)
     base = new Base(page)
+
     await loginpage.goTo()
     await loginpage.loginWS(dataset.username, dataset.password)
     await loginpage.successfullLogin()
-    portfolio = new PORTFOLIO(page)
     await base.NavigateTo('Portfolio')
     if (!isDataReset) {
       await base.resetData()

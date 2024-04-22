@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class WATCHLIST {
+class Watchlist extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.addNewWatchlist = page.locator('.add-new-list')
     this.newWLField = page.locator("[value='Watchlist']")
     this.createWLButton = page.locator(".create_wl_form_wrapper [type='submit']")
@@ -53,7 +52,7 @@ class WATCHLIST {
   }
 
   async watchlist() {
-    await this.base.isActive('Personal Watchlist Overview')
+    await this.isActive('Personal Watchlist Overview')
   }
 
   async addNewWL() {
@@ -61,14 +60,14 @@ class WATCHLIST {
     await this.newWLField.fill('WL3')
     await this.createWLButton.click()
     await this.page.waitForTimeout(5000)
-    await this.base.sidePanelTab('Watchlists')
+    await this.sidePanelTab('Watchlists')
     await this.page.waitForSelector('.wl_name', { state: 'visible' })
     await expect(this.wl3Name).toBeVisible()
     await expect(this.wl3Title).toBeVisible()
   }
 
   async dragAndDropSymbol() {
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.dragAndDrop("[data-rbd-draggable-id='marketOverviewLeftPanel'] .table_symbol_link >> text='DAX'", '.page_content .table-widget')
     await expect(this.symbolDAX).toBeVisible()
     await this.shareWatchlistIcon.click()
@@ -80,14 +79,14 @@ class WATCHLIST {
     await this.checkMark.first().click()
     await this.displayString.click()
     await this.searchInput.fill('WL3')
-    await this.base.chooseEllipsis('WL3')
+    await this.chooseEllipsis('WL3')
     await this.submitButton.click()
-    await this.base.sidePanelTab('Watchlists')
+    await this.sidePanelTab('Watchlists')
     await this.page.waitForTimeout(5000)
     const count = await this.sharedWL.count()
     console.log(count)
     expect(count).toEqual(2)
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
   }
 
   async clickOnWL3() {
@@ -146,9 +145,9 @@ class WATCHLIST {
   }
 
   async newBrowserWindow(browser) {
-    const { context, page } = await this.base.newWindowLogin(browser)
-    await this.base.NavigateToNewBrowser(page, 'Watchlists')
-    await this.base.chooseHeaderTabNewBrowser(page, 'All Watchlists', 'All Watchlists')
+    const { context, page } = await this.newWindowLogin(browser)
+    await this.NavigateToNewBrowser(page, 'Watchlists')
+    await this.chooseHeaderTabNewBrowser(page, 'All Watchlists', 'All Watchlists')
     await page.waitForSelector('.tab-content-txt', { state: 'visible' })
     const count1 = await page.locator('.tab-content-txt').count()
     const [newPage] = await Promise.all([context.waitForEvent('page'), page.locator("[data-test-name='Open in new browser window']").last().click()])
@@ -193,7 +192,7 @@ class WATCHLIST {
     await expect(this.page.locator('.display-string')).toHaveText('Add watchlist to overview')
     await this.watchlistChooseField.click()
     await this.wlSearchField.fill('123')
-    await this.base.chooseEllipsis('123')
+    await this.chooseEllipsis('123')
     await this.page.waitForSelector('.nav-icon', { state: 'visible' })
     await expect(this.tooltipOption.first()).toBeVisible()
     await expect(this.page.locator('[data-test-name="Remove from overview"]').last()).toBeVisible()
@@ -211,7 +210,7 @@ class WATCHLIST {
   }
 
   async dragAndDropSymbolToPersonalWL() {
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.dragAndDrop('.aside_widget_content .table_symbol_link:has-text("DAX")', '.page_content .table-widget')
     await expect(this.symbolDAX).toBeVisible()
   }
@@ -224,4 +223,4 @@ class WATCHLIST {
   }
 }
 
-module.exports = { WATCHLIST }
+module.exports = { Watchlist }

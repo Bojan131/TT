@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class WORKSPACE {
+class Workspace extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.addnewWorkspaceButton = page.locator('.add-new-list')
     this.workspaceMessage = page.locator('.workspace-message')
     this.workspaceTabContent = page.locator('.tab-content-txt')
@@ -79,15 +78,15 @@ class WORKSPACE {
   }
 
   async renameWorkspace(name) {
-    await this.base.toolTip('Rename workspace')
+    await this.toolTip('Rename workspace')
     await this.workspaceName.fill(name)
     await this.submitButton.click()
     await this.page.waitForSelector(`.tab-content-txt:has-text("${name}")`, { state: 'visible' })
-    await this.base.isActive(name)
+    await this.isActive(name)
   }
 
   async deleteWorkspace() {
-    await this.base.toolTip('Do you like to delete this workspace? This action cannot be undone.')
+    await this.toolTip('Do you like to delete this workspace? This action cannot be undone.')
     await this.deleteButton.click()
   }
   async deleteWL1IfExists() {
@@ -100,9 +99,9 @@ class WORKSPACE {
 
   async addWidget(widget) {
     await this.page.waitForSelector('.workspace-container', { state: 'visible' })
-    await this.base.toolTip('Add widget')
+    await this.toolTip('Add widget')
     const expectedTexts = ['Interactive Chart', 'News filter', 'Breaking news', 'Watchlist', 'Price page', 'Economic data', 'Cross rates', 'Commodities matrix']
-    await this.base.checkItems(this.widgetName, expectedTexts)
+    await this.checkItems(this.widgetName, expectedTexts)
     const count = await this.widgetName.count()
     for (let i = 0; i < count; ++i) {
       const text = await this.widgetName.nth(i).textContent()
@@ -128,7 +127,7 @@ class WORKSPACE {
   async addNewsFilter() {
     await this.page.waitForSelector('.page-content .headline', { state: 'visible' })
     const countNews1 = await this.newsHeadline.count()
-    await this.base.toolTip('Add news filter')
+    await this.toolTip('Add news filter')
     await this.page.waitForSelector(".filter_label >> text='Create news filter'", { state: 'visible' })
     await expect(this.filterLabel.first()).toHaveText('Create news filter')
     await this.filterLabel.first().click()
@@ -136,8 +135,8 @@ class WORKSPACE {
     await this.newsSerachTerm.fill('Dow Jones')
     await this.newFilterCriteria.nth(6).click()
     await this.packagesFilterSearch.fill('dpa')
-    await this.base.chooseEllipsis('dpa-AFX International ProFeed English')
-    await this.base.chooseEllipsis('dpa-AFX changed from APA/dpa-AFX ProFeed')
+    await this.chooseEllipsis('dpa-AFX International ProFeed English')
+    await this.chooseEllipsis('dpa-AFX changed from APA/dpa-AFX ProFeed')
     await this.newFilterCriteria.nth(6).click()
     await this.filterApplyButton.click()
     await this.page.waitForSelector(".title_text >> text='DJ industrial'", { state: 'visible' })
@@ -154,7 +153,7 @@ class WORKSPACE {
     await expect(this.filterLabel.first()).toHaveText('Create news filter')
     await this.filterLabel.last().click()
     await this.newsFilterFields.click()
-    await this.base.chooseEllipsis('DJ industrial')
+    await this.chooseEllipsis('DJ industrial')
     await this.page.waitForTimeout(4000)
     await expect(this.page.locator(".title_text >> text='DJ industrial'").last()).toBeVisible()
     const countNews2 = await this.newsHeadline.count()
@@ -162,7 +161,7 @@ class WORKSPACE {
   }
 
   async addDaxToNewsFilter() {
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.page.dragAndDrop('.aside_widget_content .table_symbol_link:has-text("DAX")', '.workspace-widget-content:nth-of-type(2)')
     await this.page.waitForSelector(".title_text >> text='DAX'", { state: 'visible' })
     await expect(this.page.locator(".title_text >> text='DAX'")).toBeVisible()
@@ -171,7 +170,7 @@ class WORKSPACE {
   async deleteFilter() {
     await this.widgetActionButton.first().click()
     await this.newsFilterFields.last().click()
-    await this.base.chooseEllipsis('DJ industrial')
+    await this.chooseEllipsis('DJ industrial')
     await this.widgetActionButton.first().click()
     await this.newsFilterFields.last().click()
     await this.page.waitForSelector(".ellipsis-option >> text='DJ industrial'", { state: 'hidden' })
@@ -201,17 +200,17 @@ class WORKSPACE {
     await this.page.locator(".has_column_picker .table_symbol_link >> text='DAX'").click({ button: 'right' })
     await this.page.locator(".ag-menu-option-text >> text='Details'").click()
     await this.page.locator(".ag-menu-option-text >> text='Chart'").click()
-    await this.base.checkChart()
+    await this.checkChart()
   }
 
   async quoteboardPricePage() {
     await this.page.waitForSelector("[data-test-name='Quoteboard']", { state: 'visible' })
-    await this.base.toolTip('Quoteboard')
+    await this.toolTip('Quoteboard')
     await expect(this.quoteBoards.first()).toBeVisible()
     await this.quoteboardsActionMenu.first().click()
     await this.page.locator(".ws-am-options [role='presentation'] >> text='Overview'").click()
     await expect(this.symbolHeaderName).toHaveText('DAX')
-    await this.base.isActive('Overview')
+    await this.isActive('Overview')
   }
 
   async wlActionButtonChoose(name) {
@@ -245,7 +244,7 @@ class WORKSPACE {
     await this.pricePageMenuItem.last().click()
     await this.newsFilterFields.click()
     await this.wlWidgetSearch.fill('Workspace')
-    await this.base.chooseEllipsis('Workspace')
+    await this.chooseEllipsis('Workspace')
     await expect(this.page.locator(".title_text >> text='Workspace'")).toBeVisible()
   }
 
@@ -306,7 +305,7 @@ class WORKSPACE {
     await this.wlActionButtonChoose(textChart3)
     await this.page.waitForTimeout(3000)
     await this.chartCBOptions.last().click()
-    await this.base.chooseEllipsis('MACD + Volume')
+    await this.chooseEllipsis('MACD + Volume')
     await expect(this.chartSymbolTitle.nth(1)).toHaveText('MACD (12,26,9)')
     await expect(this.chartSymbolTitle.last()).toHaveText('Volume ')
     await this.wlRadioButtons.first().click()
@@ -323,7 +322,7 @@ class WORKSPACE {
     const textChart = await this.chartSymbolTitle.first().textContent()
     await this.wlActionButtonChoose(textChart)
     await this.page.locator('.display-string').nth(1).click()
-    await this.base.chooseEllipsis('Workspace')
+    await this.chooseEllipsis('Workspace')
   }
 
   async interactiveChart() {
@@ -391,21 +390,21 @@ class WORKSPACE {
   }
 
   async deleteWorkspace() {
-    await this.base.toolTip('Do you like to delete this workspace? This action cannot be undone.')
+    await this.toolTip('Do you like to delete this workspace? This action cannot be undone.')
     await this.deleteButton.click()
   }
 
   async deleteWL() {
-    await this.base.NavigateTo('Watchlists')
-    await this.base.chooseHeaderTab('Personal Watchlist Overview', 'Personal Watchlist Overview')
+    await this.NavigateTo('Watchlists')
+    await this.chooseHeaderTab('Personal Watchlist Overview', 'Personal Watchlist Overview')
     await this.page.waitForSelector('.display-string', { state: 'visible' })
     await this.page.locator('.display-string').click()
     await this.page.locator("[placeholder='Search']").last().fill('Workspace')
-    await this.base.chooseEllipsis('Workspace')
+    await this.chooseEllipsis('Workspace')
     await this.deleteWLButtonByDataTest.waitFor({ state: 'visible' })
     await this.deleteWLButtonByDataTest.click()
     await this.deleteWLButton.click()
   }
 }
 
-module.exports = { WORKSPACE }
+module.exports = { Workspace }

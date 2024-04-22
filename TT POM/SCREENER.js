@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class SCREENER {
+class Screener extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.headerTitle = page.locator('.page-title')
     this.newScreenerButton = page.locator('.add-new-list')
     this.exchanges = page.locator('.source_label')
@@ -45,7 +44,7 @@ class SCREENER {
     await expect(this.headerTitle).toHaveText('Screener')
     await this.newScreenerButton.click()
     await this.page.waitForSelector(".tab-content-txt:has-text('New screen')", { state: 'visible' })
-    await this.base.isActive('New screen')
+    await this.isActive('New screen')
     await expect(this.exchanges).toBeVisible()
     await this.screenerFilterOption.nth(1).click()
     await this.page.waitForSelector(".ellipsis-option:has-text('USD')", { state: 'visible' })
@@ -95,7 +94,7 @@ class SCREENER {
     await this.page.waitForSelector(".screener_execute_wrapper .ag-header-cell-text:has-text('Perf. 1Y')", { state: 'visible' })
     await expect(this.screenerHeader.last()).toHaveText('Perf. 1Y')
     await expect(this.nextFilterRelation).toBeVisible()
-    await this.base.isActive('AND')
+    await this.isActive('AND')
   }
 
   async comparisonButton() {
@@ -116,4 +115,4 @@ class SCREENER {
   }
 }
 
-module.exports = { SCREENER }
+module.exports = { Screener }

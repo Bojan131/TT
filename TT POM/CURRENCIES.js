@@ -3,10 +3,9 @@ const { Base } = require('../TT Utils/Base')
 const exp = require('constants')
 const { globalAgent } = require('https')
 
-class CURRENCIES {
+class Currencies extends Base {
   constructor(page) {
     this.page = page
-    this.base = new Base(page)
     this.tableHeaderText = page.locator('.page-content .ag-header-cell-text')
     this.tabItem = page.locator('.tab-item')
     this.tableTitle = page.locator('.page-content .title')
@@ -33,35 +32,35 @@ class CURRENCIES {
 
   async Currencies() {
     await this.page.waitForSelector('.tab-item', { state: 'visible' })
-    await this.base.isActive('overview')
+    await this.isActive('overview')
     await this.page.waitForSelector(".ag-header-cell-text:has-text('Name')", { state: 'visible' })
     const expectedTexts = ['Name', 'Last', 'Chg. (%)', '1Y (%)', '3Y (%)', 'YTD (%)']
-    await this.base.checkItems(this.tableHeaderText, expectedTexts)
+    await this.checkItems(this.tableHeaderText, expectedTexts)
     const expectedTexts2 = ['overview', 'EUR', 'USD', 'GBP', 'JPY', 'CHF', 'AUD', 'CAD', 'HKD', 'SGD']
-    await this.base.checkItems(this.tabItem, expectedTexts2)
+    await this.checkItems(this.tabItem, expectedTexts2)
     await expect(this.tableTitle.first()).toBeVisible()
   }
 
   async currenciesColumnPicker() {
     await this.columnPicker.click()
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async currenciesEurButton() {
-    await this.base.chooseSymbolTab('EUR')
+    await this.chooseSymbolTab('EUR')
     await this.page.waitForSelector(".ag-header-cell-text:has-text('Name')", { state: 'visible' })
     const expectedTexts = ['Name', 'Last', 'Chg. (%)', '1Y (%)', '3Y (%)', 'YTD (%)']
-    await this.base.checkItems(this.tableHeaderText, expectedTexts)
+    await this.checkItems(this.tableHeaderText, expectedTexts)
   }
 
   async EurUsdSymbol() {
     await this.EurUsdsymbol.click()
     await expect(this.headerName).toHaveText('EUR/USD Spot')
-    await this.base.sidePanelTab('Markets')
+    await this.sidePanelTab('Markets')
     await this.sidePanelEurUsdSymbol.click()
     await expect(this.headerName).toHaveText('EUR/USD Spot')
-    await this.base.chooseSymbolTab('overview')
+    await this.chooseSymbolTab('overview')
   }
 
   async crossRates() {
@@ -73,9 +72,9 @@ class CURRENCIES {
 
   async crossRatesCalculator() {
     await this.calculatorField.first().click()
-    await this.base.chooseEllipsis('GBP - British pound')
+    await this.chooseEllipsis('GBP - British pound')
     await this.calculatorField.last().click()
-    await this.base.chooseEllipsis('NOK - Norwegian krone')
+    await this.chooseEllipsis('NOK - Norwegian krone')
     await this.calculatorinputField.first().fill('5')
     await this.page.waitForSelector('.currency_calculator_input', { state: 'visible' })
     await expect(this.calculatorinputField.last()).toHaveValue(/.+/) // Expect to have any value
@@ -94,7 +93,7 @@ class CURRENCIES {
     await expect(this.cryptosHeader).toBeVisible()
     await this.page.waitForSelector('.page-content .ag-header-cell-text', { state: 'visible' })
     const expectedTexts = ['Name', 'Price (USD)', 'Chg% (24h)', 'Vol (24h)', 'Total Vol% (24h)', 'Market Cap', 'Sharpe Ratio (1Y)', 'Chg% (7D)', 'Price (BTC)', 'Symbol', 'Mountain-View Rating']
-    await this.base.checkItems(this.tableHeaderText, expectedTexts)
+    await this.checkItems(this.tableHeaderText, expectedTexts)
   }
 
   async Bitcoin() {
@@ -108,7 +107,7 @@ class CURRENCIES {
     await expect(this.page.locator('.page-content .ag-group-value').first()).toBeVisible()
     await this.columnPicker.click()
     const expectedTexts = ['Active Columns', 'Basic values', 'Performance', 'Financials']
-    await this.base.checkItems(this.columnPickerLabel, expectedTexts)
+    await this.checkItems(this.columnPickerLabel, expectedTexts)
   }
 
   async CryptoCurrenciesNews() {
@@ -117,4 +116,4 @@ class CURRENCIES {
   }
 }
 
-module.exports = { CURRENCIES }
+module.exports = { Currencies }
