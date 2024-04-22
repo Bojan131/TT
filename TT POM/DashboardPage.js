@@ -4,6 +4,7 @@ const exp = require('constants')
 
 class DashboardPage extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.navigationTitle = page.locator('.navigation-title')
     this.footerText = page.locator('.footer-content span')

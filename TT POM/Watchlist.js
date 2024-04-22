@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Watchlist extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.addNewWatchlist = page.locator('.add-new-list')
     this.newWLField = page.locator("[value='Watchlist']")

@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Bonds extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.tabItem = page.locator('.tab-item')
     this.tableHeaderName = page.locator('.table_name')

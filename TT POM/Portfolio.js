@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Portfolio extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.addNewPortfolioButton = page.locator('.buttons_container .plain')
     this.savePortfolioButton = page.locator(".footer [type='submit']")

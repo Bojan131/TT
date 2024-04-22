@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Baha_news extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.newsTitle = page.locator('.latest-news-list .news-title')
     this.newsSection = page.locator('.news-section').nth(1)

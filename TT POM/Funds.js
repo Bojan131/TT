@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Funds extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.headerTitle = page.locator('.label')
     this.performance = page.locator('.performance')

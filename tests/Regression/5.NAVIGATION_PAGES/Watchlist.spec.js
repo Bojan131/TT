@@ -3,7 +3,7 @@ const { LoginPage } = require('../../../TT POM/LoginPage')
 const { Watchlist } = require('../../../TT POM/Watchlist')
 const { Base } = require('../../../TT Utils/Base')
 const { watch } = require('fs')
-const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
+//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
 let watchlist
 let base
@@ -16,7 +16,7 @@ test.beforeEach(async ({ page }, testInfo) => {
     base = new Base(page)
 
     await loginpage.goTo()
-    await loginpage.loginWS(dataset.username, dataset.password)
+    await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
     await loginpage.successfullLogin()
     await base.NavigateTo('Watchlists')
     if (!isDataReset) {

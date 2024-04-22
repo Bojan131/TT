@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Screener extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.headerTitle = page.locator('.page-title')
     this.newScreenerButton = page.locator('.add-new-list')

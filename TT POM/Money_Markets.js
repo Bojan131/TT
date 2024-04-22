@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Money_Markets extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.headerTitle = page.locator('.fixed_income_overview_wrapper .justify-space-between')
     this.soniaSymbol = page.locator("[data-type='gbp']")

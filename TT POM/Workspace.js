@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Workspace extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.addnewWorkspaceButton = page.locator('.add-new-list')
     this.workspaceMessage = page.locator('.workspace-message')

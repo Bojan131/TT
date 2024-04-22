@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Futures extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.symbolEMini = page.locator(".page-content .table_symbol_link:has-text('DAX FUTURES')")
     this.headerName = page.locator('.header-name')

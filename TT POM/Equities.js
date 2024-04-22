@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Equities extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.asideWidgetSymbolDax = page.locator(".aside_widget_content .table_symbol_link:has-text('DAX')")
     this.groupName = page.locator('.ag-group-value')

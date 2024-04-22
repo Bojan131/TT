@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Currencies extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.tableHeaderText = page.locator('.page-content .ag-header-cell-text')
     this.tabItem = page.locator('.tab-item')

@@ -5,6 +5,7 @@ const { globalAgent } = require('https')
 
 class Commodities extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.symbolGold = page.locator('.page-content .table_symbol_link >> text="Gold"')
     this.headerName = page.locator('.header-name')

@@ -3,6 +3,7 @@ const { Base } = require('../TT Utils/Base')
 
 class OverviewPage extends Base {
   constructor(page) {
+    super(page)
     this.page = page
     this.otherNews = page.locator('.aside_widget .link_inactive')
     this.arrowRight = page.locator('.arrow_right')
