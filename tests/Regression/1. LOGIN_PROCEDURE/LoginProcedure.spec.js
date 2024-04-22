@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
 const { log } = require('console')
-const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
+//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
+//await loginpage.loginWS(dataset.username, dataset.password)
 let loginpage
 
 test.beforeEach(async ({ page }) => {
@@ -10,12 +11,12 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('Failed login(wrong password)(1)', async () => {
-  await loginpage.loginWS(dataset.username, '123')
+  await loginpage.loginWS(process.env.USERNAME, '123')
   await loginpage.incorectLogin()
 })
 
 test('Failed login(empty password)(2)', async () => {
-  await loginpage.loginWS(dataset.username, '')
+  await loginpage.loginWS(process.env.USERNAME, '')
   await loginpage.incorectLogin()
 })
 
@@ -26,21 +27,21 @@ test('Failed login(Disabled user)(3)', async () => {
 
 test('Failed login(German)(4)', async () => {
   await loginpage.chooseLanguage('Deutsch')
-  await loginpage.loginWS('dfdfgdg', dataset.password)
+  await loginpage.loginWS('dfdfgdg', process.env.PASSWORD)
   await loginpage.incorectLoginGerman()
 })
 
 test('Failed login_2(German)(5)', async () => {
   await loginpage.chooseLanguage('Deutsch')
-  await loginpage.loginWS(dataset.username, '123')
+  await loginpage.loginWS(process.env.USERNAME, '123')
   await loginpage.incorectLoginGerman()
 })
 
 test('Forgot password(6)', async ({ browser }) => {
-  await loginpage.resetPassword(browser, dataset.username)
+  await loginpage.resetPassword(browser, process.env.USERNAME)
 })
 
 test('Successfull login(7)', async () => {
-  await loginpage.loginWS(dataset.username, dataset.password)
+  await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
   await loginpage.successfullLogin()
 })
