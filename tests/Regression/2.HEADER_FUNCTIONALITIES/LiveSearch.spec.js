@@ -24,6 +24,12 @@ test.beforeEach(async ({ page }, testInfo) => {
     let username = process.env.USERNAME || dataset.username
     let password = process.env.PASSWORD || dataset.password
 
+    console.log("Environment variable USERNAME:", process.env.USERNAME);
+console.log("Dataset username:", dataset.username);
+
+console.log("Environment variable PASSWORD:", process.env.PASSWORD);
+console.log("Dataset password:", dataset.password);
+
     await loginpage.goTo()
     await loginpage.loginWS(username, password)
     await loginpage.successfullLogin()
