@@ -31,7 +31,7 @@ module.exports = defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     browserName: 'chromium',
-    headless: false,
+    headless: true,
     args: ['--window-size=1920,1080'],
     viewport: { width: 1920, height: 1080 },
     video: {

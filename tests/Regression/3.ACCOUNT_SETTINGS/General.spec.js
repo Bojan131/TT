@@ -8,13 +8,21 @@ let base
 let isDataReset = false
 let dataset
 
+try {
+  dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
+} catch (error) {
+  console.error("Failed to load 'placeorder.json'")
+  dataset = {}
+}
+
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
   accountsettings = new AccountSettings(page)
   base = new Base(page)
 
-  let username = process.env.USERNAME || dataset.username
-  let password = process.env.PASSWORD || dataset.password
+  let username = dataset.username || process.env.USERNAME
+  let password = dataset.password || process.env.PASSWORD
+
   await loginpage.goTo()
   await loginpage.loginWS(username, password)
   await loginpage.successfullLogin()
