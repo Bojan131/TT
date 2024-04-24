@@ -3,7 +3,7 @@ const { Base } = require('../TT Utils/Base')
 
 class AccountSettings extends Base {
   constructor(page) {
-    super(page) 
+    super(page)
     this.page = page
     this.drawer = page.locator('.open_drawer')
     this.firstLayout = page.locator("[d='M0 0h7v30H0zM9 0h13v30H9zM24 0h26v30H24z']")

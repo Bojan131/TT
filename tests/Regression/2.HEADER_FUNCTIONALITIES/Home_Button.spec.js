@@ -2,19 +2,30 @@ const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
 const { DashboardPage } = require('../../../TT POM/DashboardPage')
 const { Base } = require('../../../TT Utils/Base')
-//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
 let dashboard
 let base
 let isDataReset = false
+let dataset
+
+try {
+  dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')));
+} catch (error) {
+  console.error("Failed to load 'placeorder.json'");
+  dataset = {}
+}
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
-  base = new Base(page)
-  await loginpage.goTo()
-  await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
-  await loginpage.successfullLogin()
   dashboard = new DashboardPage(page)
+  base = new Base(page)
+
+  let username = process.env.USERNAME || dataset.username
+  let password = process.env.PASSWORD || dataset.password
+
+  await loginpage.goTo()
+  await loginpage.loginWS(username, password)
+  await loginpage.successfullLogin()
   if (!isDataReset) {
     await base.resetData()
     isDataReset = true
@@ -31,6 +42,6 @@ test('Starting page(2)', async () => {
   await base.NavigateTo('Economic Data')
   await dashboard.chooseOption()
   await dashboard.LogOut()
-  await loginpage.loginWS(dataset.username, dataset.password)
+  await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
   await dashboard.EconomicDataCheck()
 })

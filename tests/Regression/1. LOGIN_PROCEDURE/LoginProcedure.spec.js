@@ -1,22 +1,33 @@
 const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
 const { log } = require('console')
-//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
-//await loginpage.loginWS(dataset.username, dataset.password)
 let loginpage
+let username, password
+let dataset
+
+try {
+  dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')));
+} catch (error) {
+  console.error("Failed to load 'placeorder.json'");
+  dataset = {}
+}
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
+
+  username = process.env.USERNAME || dataset.username
+  password = process.env.PASSWORD || dataset.password
+
   await loginpage.goTo()
 })
 
 test('Failed login(wrong password)(1)', async () => {
-  await loginpage.loginWS(process.env.USERNAME, '123')
+  await loginpage.loginWS(username, '123')
   await loginpage.incorectLogin()
 })
 
 test('Failed login(empty password)(2)', async () => {
-  await loginpage.loginWS(process.env.USERNAME, '')
+  await loginpage.loginWS(username, '')
   await loginpage.incorectLogin()
 })
 
@@ -27,21 +38,21 @@ test('Failed login(Disabled user)(3)', async () => {
 
 test('Failed login(German)(4)', async () => {
   await loginpage.chooseLanguage('Deutsch')
-  await loginpage.loginWS('dfdfgdg', process.env.PASSWORD)
+  await loginpage.loginWS('dfdfgdg', password)
   await loginpage.incorectLoginGerman()
 })
 
 test('Failed login_2(German)(5)', async () => {
   await loginpage.chooseLanguage('Deutsch')
-  await loginpage.loginWS(process.env.USERNAME, '123')
+  await loginpage.loginWS(username, '123')
   await loginpage.incorectLoginGerman()
 })
 
 test('Forgot password(6)', async ({ browser }) => {
-  await loginpage.resetPassword(browser, process.env.USERNAME)
+  await loginpage.resetPassword(browser, username)
 })
 
 test('Successfull login(7)', async () => {
-  await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
+  await loginpage.loginWS(username, password)
   await loginpage.successfullLogin()
 })

@@ -2,11 +2,11 @@ const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
 const { Portfolio } = require('../../../TT POM/Portfolio')
 const { Base } = require('../../../TT Utils/Base')
-//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
 let portfolio
 let base
 let isDataReset = false
+let dataset
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(36)') {
@@ -14,8 +14,10 @@ test.beforeEach(async ({ page }, testInfo) => {
     portfolio = new Portfolio(page)
     base = new Base(page)
 
+    let username = process.env.USERNAME || dataset.username
+    let password = process.env.PASSWORD || dataset.password
     await loginpage.goTo()
-    await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
+    await loginpage.loginWS(username, password)
     await loginpage.successfullLogin()
     await base.NavigateTo('Portfolio')
     if (!isDataReset) {
@@ -65,7 +67,7 @@ test('Manipulation with portfolio icons(30/31/32/33)', async () => {
 })
 
 test('Open in new browser(36)', async ({ page, browser }) => {
-  portfolio = new PORTFOLIO(page)
+  portfolio = new Portfolio(page)
   await portfolio.openNewBrowser(browser)
 })
 

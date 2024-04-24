@@ -3,11 +3,11 @@ const { LoginPage } = require('../../../TT POM/LoginPage')
 const { Watchlist } = require('../../../TT POM/Watchlist')
 const { Base } = require('../../../TT Utils/Base')
 const { watch } = require('fs')
-//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
 let watchlist
 let base
 let isDataReset = false
+let dataset
 
 test.beforeEach(async ({ page }, testInfo) => {
   if (testInfo.title !== 'Open in new browser(19)') {
@@ -15,8 +15,10 @@ test.beforeEach(async ({ page }, testInfo) => {
     watchlist = new Watchlist(page)
     base = new Base(page)
 
+    let username = process.env.USERNAME || dataset.username
+    let password = process.env.PASSWORD || dataset.password
     await loginpage.goTo()
-    await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
+    await loginpage.loginWS(username, password)
     await loginpage.successfullLogin()
     await base.NavigateTo('Watchlists')
     if (!isDataReset) {
@@ -54,7 +56,7 @@ test('Rename Watchliast(13)', async () => {
 })
 
 test('Open in new browser(19)', async ({ page, browser }, testInfo) => {
-  watchlist = new WATCHLIST(page)
+  watchlist = new Watchlist(page)
   await watchlist.newBrowserWindow(browser)
 })
 

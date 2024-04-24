@@ -2,19 +2,22 @@ const { test, expect } = require('@playwright/test')
 const { LoginPage } = require('../../../TT POM/LoginPage')
 const { AccountSettings } = require('../../../TT POM/AccountSettings')
 const { Base } = require('../../../TT Utils/Base')
-//const dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 let loginpage
 let accountsettings
 let base
 let isDataReset = false
+let dataset
 
 test.beforeEach(async ({ page }) => {
   loginpage = new LoginPage(page)
-  base = new Base(page)
-  await loginpage.goTo()
-  await loginpage.loginWS(process.env.USERNAME, process.env.PASSWORD)
-  await loginpage.successfullLogin()
   accountsettings = new AccountSettings(page)
+  base = new Base(page)
+
+  let username = process.env.USERNAME || dataset.username
+  let password = process.env.PASSWORD || dataset.password
+  await loginpage.goTo()
+  await loginpage.loginWS(username, password)
+  await loginpage.successfullLogin()
   if (!isDataReset) {
     await base.resetData()
     isDataReset = true
