@@ -48,7 +48,7 @@ test('Historic yield search(4)', async () => {
 
 test('Bonds Search(5/6)', async () => {
   await base.chooseHeaderTab('Bonds search', 'Bonds search')
-  await bonds.bondsSerach()
+  await bonds.bondsSearch()
 })
 
 test('Bonds IPO(7/8)', async () => {

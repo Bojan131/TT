@@ -15,16 +15,16 @@ class Funds extends Base {
     this.firstTable = page.locator('.page-content .ag-header').first()
     this.threeMHeader = this.firstTable.locator(".ag-header-cell-text >> text='3M (%)'")
     this.equityMoreIcon = page.locator('.more_icon').first()
-    this.simpleSerachTable = page.locator('.simple_search_table_wrapper')
+    this.simpleSearchTable = page.locator('.simple_search_table_wrapper')
     this.topPerformerDropDown = page.locator('.grid-container-row .display-string')
     this.topPerformerTable = page.locator('.top_performer_table_wrapper').first()
     this.dropDownTextBox = page.locator('.grid-container-row .cb_options')
     this.searchTopPerformer = page.locator(".grid-container-row [placeholder='Search']")
     this.dropDownSearchField = page.locator('.display-string')
     this.highChart = page.locator('.highcharts-background')
-    this.simpleSerachTable = page.locator('.simple_search_table_wrapper')
-    this.simpleSerachField = page.locator("[name='searchTerm']")
-    this.simpleSerachSubmitButton = page.locator(".page-content [type='submit']")
+    this.simpleSearchTable = page.locator('.simple_search_table_wrapper')
+    this.simpleSearchField = page.locator("[name='searchTerm']")
+    this.simpleSearchSubmitButton = page.locator(".page-content [type='submit']")
     this.symbol = page.locator('.page-content .table_symbol_link')
     this.sliderInput = page.locator('.slider__input')
     this.tableHeaderVolatility1Y = page.locator(".page-content .ag-header-cell-text >> text='Volatility 1Y'")
@@ -53,7 +53,7 @@ class Funds extends Base {
     await this.isActive('Simple search')
     await this.page.waitForSelector(".cb_options >> text='Equity'", { state: 'visible' })
     await expect(this.page.locator('.cb_options').first()).toHaveText('Equity')
-    await expect(this.simpleSerachTable).toBeVisible()
+    await expect(this.simpleSearchTable).toBeVisible()
   }
 
   async topPerformer() {
@@ -84,14 +84,14 @@ class Funds extends Base {
     await expect(this.dropDownSearchField.first()).toHaveText('Please choose')
     await this.page.waitForSelector('.highcharts-background', { state: 'visible' })
     await expect(this.highChart).toBeVisible()
-    await expect(this.simpleSerachTable).toBeVisible()
+    await expect(this.simpleSearchTable).toBeVisible()
   }
 
   async simpleSearchFilter() {
-    await this.simpleSerachField.fill('black rock')
+    await this.simpleSearchField.fill('black rock')
     await this.dropDownSearchField.nth(1).click()
     await this.chooseEllipsis('Money Market')
-    await this.simpleSerachSubmitButton.click()
+    await this.simpleSearchSubmitButton.click()
     await this.page.waitForSelector(".page-content .table_symbol_link:has-text('Black Rock')", { state: 'visible' })
     await expect(this.symbol.first()).toContainText(/Black Rock/i)
   }
@@ -99,14 +99,14 @@ class Funds extends Base {
   async expertSearch() {
     await expect(this.dropDownSearchField.first()).toHaveText('Please choose')
     await expect(this.highChart).toBeVisible()
-    await expect(this.simpleSerachTable).toBeVisible()
+    await expect(this.simpleSearchTable).toBeVisible()
   }
 
   async expertSearchFilter() {
-    await this.simpleSerachField.fill('Van')
+    await this.simpleSearchField.fill('Van')
     await this.dropDownSearchField.nth(1).click()
     await this.chooseEllipsis('Mixed Fund')
-    await this.simpleSerachSubmitButton.click()
+    await this.simpleSearchSubmitButton.click()
     await this.page.waitForSelector(".page-content .table_symbol_link:has-text('Vanguard')", { state: 'visible' })
     await expect(this.symbol.nth(1)).toContainText(/Vanguard/i)
   }
@@ -115,7 +115,7 @@ class Funds extends Base {
     await this.dropDownSearchField.nth(8).click()
     await this.chooseEllipsis('1 Year')
     await this.sliderInput.nth(2).fill('5.25')
-    await this.simpleSerachSubmitButton.click()
+    await this.simpleSearchSubmitButton.click()
     await this.page.waitForSelector(".page-content .ag-header-cell-text >> text='Volatility 1Y'", { state: 'visible' })
     await expect(this.tableHeaderVolatility1Y).toBeVisible()
   }

@@ -43,7 +43,7 @@ test('Quick Search(1/2/3/4/5/6)', async () => {
   await overview.displayAllGroupMembers()
 })
 
-test('Full Serach(1/2/3/4)', async () => {
+test('Full Search(1/2/3/4)', async () => {
   await overview.fullSearch()
   await overview.CheckMark()
   await overview.showResultsinOverview()
@@ -64,7 +64,7 @@ test('Detail Page Search(1/2/3/4/5/6/7/8/9)', async () => {
   await overview.ticker()
 })
 
-test('Fund Serach(1/2/4)', async () => {
+test('Fund Search(1/2/4)', async () => {
   await overview.fundSearch()
   await overview.simpleSearch()
   await overview.expertSearch()
