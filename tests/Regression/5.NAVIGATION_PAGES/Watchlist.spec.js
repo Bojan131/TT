@@ -12,7 +12,7 @@ let dataset
 try {
   dataset = JSON.parse(JSON.stringify(require('../../../TT Utils/placeorder.json')))
 } catch (error) {
-  console.error("Failed to load 'placeorder.json'")
+  console.error("Loading Login credentials from Github secrets")
   dataset = {}
 }
 

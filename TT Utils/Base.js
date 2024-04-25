@@ -67,14 +67,23 @@ class Base {
   }
 
   async newWindowLogin(browser) {
+    let dataset
     const context = await browser.newContext()
     const page = await context.newPage()
-    const username = page.getByPlaceholder('Username')
-    const password = page.getByPlaceholder('Password')
+    const usernameField = page.getByPlaceholder('Username')
+    const passwordField = page.getByPlaceholder('Password')
     const login = page.locator('#loginUser')
+    try {
+      dataset = JSON.parse(JSON.stringify(require('../../TT/TT Utils/placeorder.json')))
+    } catch (error) {
+      console.error("Loading Login credentials from Github secrets")
+      dataset = {}
+    }
+    let username = dataset.username || process.env.USERNAME
+    let password = dataset.password || process.env.PASSWORD
     await page.goto('https://webstation.baha.com/etfs/usa')
-    await username.fill('bojan.colic23')
-    await password.fill('Bb14011999')
+    await usernameField.fill(username)
+    await passwordField.fill(password)
     await login.click()
     await page.waitForTimeout(8000)
     return { context, page }
